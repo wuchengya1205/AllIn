@@ -1,0 +1,2 @@
+include ':app', 'mvplib', 'netlib'
+rootProject.name='AllIn'
