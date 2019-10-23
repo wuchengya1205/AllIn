@@ -15,10 +15,7 @@ import java.util.HashMap;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * author : fengzhangwei
- * date : 2019/9/11
- */
+
 public class LoginPresenter extends BaseMvpPresenter<LoginContract.IView> implements LoginContract.IPresenter {
 
     @Override

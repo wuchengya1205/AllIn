@@ -1,9 +1,6 @@
 package com.xiang.allin;
 
-/**
- * author : fengzhangwei
- * date : 2019/9/11
- */
+
 public class BaseResponse<T> {
 
     private String msg;

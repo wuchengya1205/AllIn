@@ -8,11 +8,7 @@ import com.trello.rxlifecycle2.RxLifecycle
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.Disposable
 
-/**
- * Author:Ljb
- * Time:2018/12/28
- * There is a lot of misery in life
- **/
+
 object RxUtils {
 
     fun dispose(disposable: Disposable?) {

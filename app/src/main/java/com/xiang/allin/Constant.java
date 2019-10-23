@@ -7,4 +7,6 @@ package com.xiang.allin;
 public interface Constant {
 
     String BaseUrl = "http://117.78.3.198:8081/";
+
+    String BASE_URL = "http://v.juhe.cn/";
 }

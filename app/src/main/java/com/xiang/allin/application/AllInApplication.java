@@ -16,7 +16,7 @@ public class AllInApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext =  this;
-        HttpConfig.INSTANCE.init(Constant.BaseUrl,getHeader(),getParams(),true);
+        HttpConfig.INSTANCE.init(Constant.BASE_URL,getHeader(),getParams(),true);
         NetConfig.init(this);
     }
 
