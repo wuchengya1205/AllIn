@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".FirstPage.FirstPageActivity"></activity>
         <activity android:name=".FirstPage.LoginActivity"></activity>
-        <activity android:name=".FirstPage.WelcomeActivity">
+        <activity android:name=".FirstPage.WelcomeActivity" android:theme="@style/WelcomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

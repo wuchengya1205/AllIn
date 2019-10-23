@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FirstPage.WelcomeActivity"
-    android:background="@mipmap/welcome"
-    >
+    android:background="@mipmap/welcome">
+
+
+
     <TextView
         android:id="@+id/texttime"
         android:layout_alignParentRight="true"
-        android:background="#fff"
-        android:text="倒计时:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</RelativeLayout>
+        android:background="@drawable/shape_welcom_time"
+        android:text="3"
+        android:textColor="@color/color_red"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="12dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"/>
+</merge>
