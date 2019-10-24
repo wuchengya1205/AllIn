@@ -70,6 +70,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
         if (v.getId() == R.id.btn_login){
 //            getPresenter().login();
             goActivity(FirstPageActivity.class);
+            finish();
         }
     }
 }

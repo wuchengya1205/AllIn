@@ -35,7 +35,7 @@ public abstract class BaseMvpActivity<P extends IPresenterContract> extends MvpA
         initBar();
     }
 
-    private void initBar() {
+    public void initBar() {
         ImmersionBar.with(this)
                 .transparentStatusBar()  //透明状态栏，不写默认透明色
                 .transparentNavigationBar()  //透明导航栏，不写默认黑色(设置此方法，fullScreen()方法自动为 true)
