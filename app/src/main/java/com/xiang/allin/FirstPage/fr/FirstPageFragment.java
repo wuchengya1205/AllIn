@@ -125,9 +125,7 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
                 Glide.with(getActivity()).load(imageList.get(position)).into((ImageView) view);
             }
         });
-        // 设置XBanner的页面切换特效，有多个，其他的可以到网上去查
-        xbanner.setPageTransformer(Transformer.Default);//横向移动
-        xbanner.setPageTransformer(Transformer.Alpha); //渐变，效果不明显
+        xbanner.setPageTransformer(Transformer.Scale);
         //设置轮播图点击监听
         xbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
             @Override
