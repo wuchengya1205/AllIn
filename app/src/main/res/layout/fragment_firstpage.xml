@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:scrollbars="none"
     android:layout_height="match_parent">
 
         <RelativeLayout
@@ -40,6 +41,7 @@
                 android:layout_height="@dimen/dp_1"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:scrollbars="none"
                 android:layout_marginTop="@dimen/dp_10"
                 android:id="@+id/recycler_list"
                 android:layout_below="@+id/news"

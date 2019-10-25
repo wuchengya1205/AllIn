@@ -3,6 +3,7 @@ package com.xiang.allin.application;
 import android.app.Application;
 import android.content.Context;
 
+import com.tencent.bugly.crashreport.CrashReport;
 import com.xiang.allin.base.Constant;
 import com.xiang.allin.base.NetConfig;
 
@@ -11,13 +12,16 @@ import net.ljb.kt.HttpConfig;
 import java.util.HashMap;
 
 public class AllInApplication extends Application {
+
     private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext =  this;
         HttpConfig.INSTANCE.init(Constant.BASE_URL,getHeader(),getParams(),true);
         NetConfig.init(this);
+        CrashReport.initCrashReport(getApplicationContext(), "cc388b0013", false);
     }
 
     /**

@@ -57,6 +57,8 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
             recycler_list.setLayoutManager(new LinearLayoutManager(getActivity()));
             RecyclerListAdapter recyclerListAdapter = new RecyclerListAdapter(getActivity(), data);
             recycler_list.setAdapter(recyclerListAdapter);
+            recycler_list.setHasFixedSize(true);
+            recycler_list.setNestedScrollingEnabled(false);
             recyclerListAdapter.setOnItem(new RecyclerListAdapter.setOnItemClickListener() {
                 @Override
                 public void onItemClickListener(int position, RecyclerListAdapter.RecyclerListHolder holder, String url) {
