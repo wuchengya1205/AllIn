@@ -40,7 +40,6 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
     private List<String> imageList;
     private RecyclerView recycler_list;
     private XBanner xbanner;
-    private DrawerLayout drawer_layout;
 
     @Override
     protected int getLayoutId() {
@@ -50,7 +49,7 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
     @Override
     public void getDataSuccess(CommonBean commonBean) {
         String reason = commonBean.getReason();
-        showToast(reason);
+      //  showToast(reason);
         String stat = commonBean.getResult().getStat();
         if ("1".equals(stat)){
             List<CommonBean.ResultBean.DataBean> data = commonBean.getResult().getData();
@@ -106,7 +105,6 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
         super.initView();
         xbanner = getActivity().findViewById(R.id.xbanner);
         recycler_list = getActivity().findViewById(R.id.recycler_list);
-        drawer_layout = getActivity().findViewById(R.id.drawer_layout);
     }
 
     @Override

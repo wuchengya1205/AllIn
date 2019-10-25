@@ -2,6 +2,7 @@ package com.xiang.allin.FirstPage;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
+import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xiang.allin.FirstPage.fr.FirstPageFragment;
 import com.xiang.allin.R;
@@ -43,26 +45,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public void initView() {
         super.initView();
-        initBar();
         main_frame = findViewById(R.id.main_frame);
         bottom_nav_bar = findViewById(R.id.bottom_nav_bar);
     }
 
     private void initBar() {
         ImmersionBar.with(this)
-                .transparentStatusBar()  //透明状态栏，不写默认透明色
-                .transparentNavigationBar()  //透明导航栏，不写默认黑色(设置此方法，fullScreen()方法自动为 true)
-                .transparentBar()             //透明状态栏和导航栏，不写默认状态栏为透明色，导航栏为黑色（设置此方法，fullScreen()方法自动为 true）
-                .statusBarAlpha(0.3f)  //状态栏透明度，不写默认 0.0f
-                .navigationBarAlpha(0.2f)  //导航栏透明度，不写默认 0.0F
-                .barAlpha(0.3f)  //状态栏和导航栏透明度，不写默认 0.0f
-                .statusBarDarkFont(true)   //状态栏字体是深色，不写默认为亮色
+                .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR) // 隐藏导航栏或者状态栏
                 .init();
     }
 
     @Override
     public void initData() {
         super.initData();
+        initBar();
         initBottomNavigationBar();
         initFragment();
     }
@@ -75,6 +71,12 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.main_frame, firstPageFragment).commit();
         mFragment = firstPageFragment;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initBar();
     }
 
     private void initBottomNavigationBar() {
@@ -151,5 +153,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public void onTabReselected(int position) {
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

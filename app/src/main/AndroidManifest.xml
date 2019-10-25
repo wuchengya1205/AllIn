@@ -27,7 +27,7 @@
         <activity android:name=".WebViewActivity"></activity>
         <activity android:name=".FirstPage.MainActivity" />
         <activity android:name=".login.LoginActivity" />
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".WelcomeActivity" android:theme="@style/WelcomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
