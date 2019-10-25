@@ -1,15 +1,11 @@
-package com.xiang.allin.presenter;
+package com.xiang.allin.login;
 
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.xiang.allin.base.BaseMvpPresenter;
 import com.xiang.allin.base.BaseObserver;
-import com.xiang.allin.contract.LoginContract;
 import com.xiang.allin.protocol.IHttpProtocol;
-
 import net.ljb.kt.client.HttpFactory;
 import java.util.HashMap;
 import io.reactivex.android.schedulers.AndroidSchedulers;

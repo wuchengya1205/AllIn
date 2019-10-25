@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.stx.xhb.xbanner.XBanner
+                android:id="@+id/xbanner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_250"
+                app:isAutoPlay="true"
+                app:AutoPlayTime="3000"
+                app:pointsContainerBackground="@color/pointsContainerBackground"
+                app:pointNormal="@drawable/shape_noraml"
+                app:pointSelect="@drawable/shape_selected"
+                app:pointsPosition="CENTER"
+                app:tipTextSize="@dimen/dp_12"
+                />
+
+            <TextView
+                android:id="@+id/news"
+                android:textColor="@color/color_black"
+                android:textStyle="bold"
+                android:textSize="@dimen/dp_30"
+                android:text="@string/news"
+                android:layout_below="@+id/xbanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:background="@color/background"
+                android:layout_below="@+id/news"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="@dimen/dp_10"
+                android:id="@+id/recycler_list"
+                android:layout_below="@+id/news"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+

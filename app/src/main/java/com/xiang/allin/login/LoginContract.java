@@ -1,4 +1,4 @@
-package com.xiang.allin.contract;
+package com.xiang.allin.login;
 
 import mvp.ljb.kt.contract.IPresenterContract;
 import mvp.ljb.kt.contract.IViewContract;

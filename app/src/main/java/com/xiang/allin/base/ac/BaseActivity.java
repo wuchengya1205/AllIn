@@ -1,4 +1,4 @@
-package com.xiang.allin.base;
+package com.xiang.allin.base.ac;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,15 +17,15 @@ public abstract class BaseActivity extends FragmentActivity {
         initData();
     }
 
-    private void initData() {
+    public void initData() {
 
     }
 
-    private void initView() {
+    public void initView() {
 
     }
 
-    private void init(Bundle savedInstanceState) {
+    public void init(Bundle savedInstanceState) {
 
     }
 

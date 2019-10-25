@@ -1,4 +1,4 @@
-package com.xiang.allin.base;
+package com.xiang.allin.base.ac;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xiang.allin.R;
+import com.xiang.allin.base.LoadingDialog;
+import com.xiang.allin.base.NetBroadcastReceiver;
+import com.xiang.allin.base.NetChangeListener;
 import com.xiang.allin.view.BaseNetLayout;
 import mvp.ljb.kt.contract.IPresenterContract;
 import mvp.ljb.kt.view.MvpActivity;
@@ -64,6 +67,7 @@ public abstract class BaseMvpActivity<P extends IPresenterContract> extends MvpA
 
     public void init(Bundle savedInstanceState) {
         NetBroadcastReceiver.setRegisterNetBRChange(this);
+
     }
 
     public void goActivity(Class cls) {

@@ -1,4 +1,4 @@
-package com.xiang.allin.FirstPage;
+package com.xiang.allin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,14 +7,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.xiang.allin.R;
+import com.xiang.allin.login.LoginActivity;
+import com.xiang.allin.login.LoginPresenter;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    int time = 3;
+    int time = 4;
     private TextView texttime;
 
     @Override
@@ -30,13 +31,13 @@ public class WelcomeActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (time > 0) {
+                        if (time > 1) {
                             time--;
                             texttime.setText("倒计时:"+time);
                         } else {
                             timer.cancel();
-                            startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
                             texttime.setVisibility(View.GONE);
+                            startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
                             finish();
                         }
                     }

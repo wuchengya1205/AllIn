@@ -2,18 +2,27 @@
 <com.xiang.allin.view.BaseNetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/base_net"
-    android:background="@mipmap/qq_bg"
     android:layout_height="match_parent"
-    tools:context=".FirstPage.LoginActivity">
-
+    tools:context=".login.LoginActivity">
+    <com.xiang.allin.view.snow.Snow
+        app:flakeCount="50"
+        app:minSize="50"
+        app:maxSize="70"
+        app:speedX="5"
+        app:speedY="10"
+        app:flakeSrc="@mipmap/snow_flake"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <RelativeLayout
+        android:background="@mipmap/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
             android:id="@+id/ll_input"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="240dp"
+            android:layout_marginTop="@dimen/dp_240"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
@@ -25,19 +34,19 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:paddingLeft="50dp"
+                    android:paddingLeft="@dimen/dp_50"
                     android:layout_width="wrap_content"
-                    android:text="账号:"
-                    android:textSize="18sp"
+                    android:text="@string/user"
+                    android:textSize="@dimen/sp_18"
                     android:textColor="@color/colorWhite"
                     android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/ed_mobile"
                     android:layout_width="match_parent"
-                    android:minWidth="150dp"
-                    android:layout_marginRight="50dp"
-                    android:hint="请输入账号(手机号码)"
+                    android:minWidth="@dimen/dp_150"
+                    android:layout_marginRight="@dimen/dp_50"
+                    android:hint="@string/writeuser"
                     android:inputType="phone|number"
                     android:layout_height="wrap_content" />
 
@@ -50,20 +59,20 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:paddingLeft="50dp"
+                    android:paddingLeft="@dimen/dp_50"
                     android:layout_width="wrap_content"
-                    android:text="密码:"
-                    android:textSize="18sp"
+                    android:text="@string/pwd"
+                    android:textSize="@dimen/sp_18"
                     android:textColor="@color/colorWhite"
                     android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/ed_pwd"
                     android:layout_width="match_parent"
-                    android:minWidth="150dp"
-                    android:hint="请输入密码"
+                    android:minWidth="@dimen/dp_150"
+                    android:hint="@string/writepassword"
                     android:inputType="textPassword"
-                    android:layout_marginRight="50dp"
+                    android:layout_marginRight="@dimen/dp_50"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
@@ -75,10 +84,10 @@
             android:layout_width="match_parent"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/ll_input"
-            android:layout_marginTop="80dp"
-            android:text="登录"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginTop="@dimen/dp_80"
+            android:text="@string/login"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
             android:layout_height="wrap_content" />
     </RelativeLayout>
 

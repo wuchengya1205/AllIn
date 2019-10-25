@@ -1,4 +1,4 @@
-package com.xiang.allin;
+package com.xiang.allin.base;
 
 
 public class BaseResponse<T> {

@@ -1,16 +1,23 @@
-package com.xiang.allin.FirstPage;
+package com.xiang.allin.login;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.xiang.allin.FirstPage.MainActivity;
 import com.xiang.allin.R;
-import com.xiang.allin.base.BaseMvpActivity;
-import com.xiang.allin.contract.LoginContract;
-import com.xiang.allin.presenter.LoginPresenter;
+import com.xiang.allin.base.ac.BaseMvpActivity;
+
 import org.jetbrains.annotations.NotNull;
 
-
+/**
+ * author : wuchengya
+ * e-mail : wucy1205@yeah.net
+ * date   : 2019/10/24
+ * time   :18:00
+ * desc   :ohuo
+ * version: 1.0
+ */
 public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> implements LoginContract.IView, View.OnClickListener {
 
     private EditText mobile;
@@ -24,7 +31,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
 
     @Override
     public void loginSuccess() {
-        goActivity(FirstPageActivity.class);
+        goActivity(MainActivity.class);
         finish();
     }
 
@@ -68,8 +75,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_login){
-//            getPresenter().login();
-            goActivity(FirstPageActivity.class);
+            //            getPresenter().login();
+            goActivity(MainActivity.class);
         }
     }
 }

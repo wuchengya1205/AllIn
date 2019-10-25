@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.xiang.allin.BaseResponse;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import mvp.ljb.kt.contract.IViewContract;

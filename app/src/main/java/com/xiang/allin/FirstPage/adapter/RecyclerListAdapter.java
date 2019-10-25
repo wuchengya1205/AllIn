@@ -27,6 +27,7 @@ import java.util.List;
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.RecyclerListHolder> {
     private Context context;
     private List<CommonBean.ResultBean.DataBean> data;
+    private setOnItemClickListener setOnItemClickListener;
 
     public RecyclerListAdapter(Context context, List<CommonBean.ResultBean.DataBean> data) {
         this.context = context;
@@ -40,11 +41,39 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerListHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerListHolder holder, final int position) {
         holder.title.setText(data.get(position).getTitle());
-        holder.content.setText(data.get(position).getAuthor_name());
-        Glide.with(context).load(data.get(position).getThumbnail_pic_s()).into(holder.image);
-        holder.image.setScaleType(ImageView.ScaleType.CENTER);
+        holder.content.setText(data.get(position).getAuthor_name()+"     "+data.get(position).getDate());
+        if (data.get(position).getThumbnail_pic_s() != null){
+            holder.image1.setVisibility(View.VISIBLE);
+            Glide.with(context).load(data.get(position).getThumbnail_pic_s()).into(holder.image1);
+        }
+        if (data.get(position).getThumbnail_pic_s02() != null){
+            holder.image2.setVisibility(View.VISIBLE);
+            Glide.with(context).load(data.get(position).getThumbnail_pic_s()).into(holder.image2);
+        }else {
+            holder.image2.setVisibility(View.GONE);
+        }
+        if (data.get(position).getThumbnail_pic_s03() != null){
+            holder.image3.setVisibility(View.VISIBLE);
+            Glide.with(context).load(data.get(position).getThumbnail_pic_s()).into(holder.image3);
+        }else {
+            holder.image3.setVisibility(View.GONE);
+        }
+        holder.image1.setScaleType(ImageView.ScaleType.CENTER);
+        holder.image2.setScaleType(ImageView.ScaleType.CENTER);
+        holder.image3.setScaleType(ImageView.ScaleType.CENTER);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setOnItemClickListener.onItemClickListener(position,holder,data.get(position).getUrl());
+            }
+        });
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
@@ -52,17 +81,29 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         return data.size();
     }
 
-    class RecyclerListHolder extends RecyclerView.ViewHolder {
+    public class RecyclerListHolder extends RecyclerView.ViewHolder {
 
         public TextView title;
         public  TextView content;
-        public  ImageView image;
+        public  ImageView image1;
+        public  ImageView image2;
+        public  ImageView image3;
 
         public RecyclerListHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             content = itemView.findViewById(R.id.content);
-            image = itemView.findViewById(R.id.image);
+            image1 = itemView.findViewById(R.id.image1);
+            image2 = itemView.findViewById(R.id.image2);
+            image3 = itemView.findViewById(R.id.image3);
         }
+    }
+    public void setOnItem(setOnItemClickListener setOnItemClickListener){
+        this.setOnItemClickListener = setOnItemClickListener;
+
+    }
+
+    public interface  setOnItemClickListener{
+        void onItemClickListener(int position,RecyclerListHolder holder,String url);
     }
 }

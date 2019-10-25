@@ -52,5 +52,7 @@ dependencies {
     //图片轮播
     implementation 'com.github.xiaohaibin:XBanner:1.6.1'   //第三方框架XBanner轮播
     implementation 'com.github.bumptech.glide:glide:4.5.0'
-    implementation 'com.chen.wakehao.library:bottom-navigation-bar:1.0.0'
+//    implementation 'com.chen.wakehao.library:bottom-navigation-bar:1.0.0'
+    implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.5'
+//    implementation 'com.roughike:bottom-bar:1.3.3'
 }

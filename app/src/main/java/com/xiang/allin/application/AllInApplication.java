@@ -3,7 +3,7 @@ package com.xiang.allin.application;
 import android.app.Application;
 import android.content.Context;
 
-import com.xiang.allin.Constant;
+import com.xiang.allin.base.Constant;
 import com.xiang.allin.base.NetConfig;
 
 import net.ljb.kt.HttpConfig;

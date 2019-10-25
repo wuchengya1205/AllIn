@@ -2,11 +2,10 @@ package com.xiang.allin.protocol;
 
 
 
-import com.xiang.allin.BaseResponse;
+import com.xiang.allin.base.BaseResponse;
 import com.xiang.allin.common.CommonBean;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.FieldMap;
@@ -21,5 +20,5 @@ public interface IHttpProtocol {
 
     @POST("toutiao/index")
     @FormUrlEncoded
-    Observable<BaseResponse<CommonBean>> getData(@FieldMap Map<String,String> map);
+    Observable<BaseResponse<CommonBean>> getData(@FieldMap HashMap<String, String> map);
 }
