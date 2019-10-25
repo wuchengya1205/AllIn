@@ -43,7 +43,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public void onBindViewHolder(@NonNull final RecyclerListHolder holder, final int position) {
         holder.title.setText(data.get(position).getTitle());
-        holder.content.setText(data.get(position).getAuthor_name()+"     "+data.get(position).getDate());
+        holder.content.setText(data.get(position).getAuthor_name());
+        holder.date.setText(data.get(position).getDate());
         if (data.get(position).getThumbnail_pic_s() != null){
             holder.image1.setVisibility(View.VISIBLE);
             Glide.with(context).load(data.get(position).getThumbnail_pic_s()).into(holder.image1);
@@ -84,15 +85,14 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public class RecyclerListHolder extends RecyclerView.ViewHolder {
 
         public TextView title;
-        public  TextView content;
-        public  ImageView image1;
-        public  ImageView image2;
-        public  ImageView image3;
+        public  TextView content,date;
+        public  ImageView image1,image2,image3;
 
         public RecyclerListHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
-            content = itemView.findViewById(R.id.content);
+            content = itemView.findViewById(R.id.tv_author);
+            date = itemView.findViewById(R.id.tv_date);
             image1 = itemView.findViewById(R.id.image1);
             image2 = itemView.findViewById(R.id.image2);
             image3 = itemView.findViewById(R.id.image3);

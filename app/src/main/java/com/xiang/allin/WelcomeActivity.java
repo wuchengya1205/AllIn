@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gyf.barlibrary.BarHide;
+import com.gyf.barlibrary.ImmersionBar;
 import com.xiang.allin.login.LoginActivity;
 import com.xiang.allin.login.LoginPresenter;
 import com.xiang.allin.view.CountdownDrawable;
@@ -30,6 +32,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         initView();
+        initBar();
         if (animator != null){
             animator.cancel();
         }
@@ -92,5 +95,11 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         showNumberAnimator.setInterpolator(new LinearInterpolator());
         animation.playTogether(progressAnimator, showNumberAnimator);
         return animation;
+    }
+
+    private void initBar(){
+        ImmersionBar.with(this)
+                .hideBar(BarHide.FLAG_HIDE_BAR) // 隐藏导航栏或者状态栏
+                .init();
     }
 }
