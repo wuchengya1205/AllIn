@@ -1,59 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/smartRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fillViewport="true"
-    android:overScrollMode="never"
-    android:scrollbars="none">
+    app:srlEnableRefresh="true">
 
-    <RelativeLayout
+    <com.scwang.smartrefresh.header.MaterialHeader
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         android:layout_height="match_parent">
 
-        <com.stx.xhb.xbanner.XBanner
-            android:id="@+id/xbanner"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_250"
-            app:AutoPlayTime="3000"
-            app:isAutoPlay="true"
-            app:pointNormal="@drawable/shape_noraml"
-            app:pointSelect="@drawable/shape_selected"
-            app:pointsContainerBackground="@color/pointsContainerBackground"
-            app:pointsPosition="CENTER"
-            app:tipTextSize="@dimen/dp_12" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/news"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/xbanner"
-            android:text="@string/news"
-            android:visibility="gone"
-            android:textColor="@color/color_black"
-            android:textSize="@dimen/dp_30"
-            android:textStyle="bold" />
+            <com.stx.xhb.xbanner.XBanner
+                android:id="@+id/xbanner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_250"
+                app:AutoPlayTime="3000"
+                app:isAutoPlay="true"
+                app:pointLeftRightPadding="6dp"
+                app:pointNormal="@drawable/shape_noraml"
+                app:pointSelect="@drawable/shape_selected"
+                app:pointsPosition="CENTER"
+                app:pointsVisibility="true"
+                app:tipTextSize="@dimen/dp_12" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:layout_below="@+id/news"
-            android:visibility="gone"
-            android:background="@color/background" />
+            <TextView
+                android:id="@+id/news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/xbanner"
+                android:text="@string/news"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/dp_30"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/xbanner"
-            android:layout_marginTop="@dimen/dp_4"
-            android:scrollbars="none" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:layout_below="@+id/news"
+                android:background="@color/background"
+                android:visibility="gone" />
 
-    </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/xbanner"
+                android:layout_marginTop="@dimen/dp_4"
+                android:scrollbars="none" />
 
-</ScrollView>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
 

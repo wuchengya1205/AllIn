@@ -17,6 +17,7 @@ import mvp.ljb.kt.contract.IViewContract;
  * version: 1.0
  */
 public interface FirstPageContract {
+
     interface IView extends IViewContract {
 
         void getDataSuccess(CommonBean commonBean);
