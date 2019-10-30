@@ -29,6 +29,7 @@ import com.xiang.allin.base.fr.BaseMvpFragment;
 import com.xiang.allin.FirstPage.presenter.FirstPagePresenter;
 import com.xiang.allin.common.CommonBean;
 import com.xiang.allin.FirstPage.FirstPageContract;
+import com.xiang.allin.listener.RefreshListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,6 +47,7 @@ import java.util.Map;
  */
 public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresenter> implements FirstPageContract.IView, XBanner.OnItemClickListener, OnRefreshListener, RecyclerListAdapter.setOnItemClickListener, NestedScrollView.OnScrollChangeListener {
 
+    private static RefreshListener mRefreshListener;
     private List<String> imageList;
     private RecyclerView recycler_list;
     private XBanner xbanner;
@@ -57,6 +59,7 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
     private List<CommonBean.ResultBean.DataBean> list = new ArrayList<>();
     private NestedScrollView nestedScrollView;
     private int bannerHeight;
+    private Boolean isRefresh = false;
 
     @Override
     protected int getLayoutId() {
@@ -71,7 +74,12 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
         setXBanner();
         // 设置XBanner的页面切换特效，有多个，其他的可以到网上去查
         xbanner.setPageTransformer(randomTransformer());
-        if (commonBean.getResult() != null){
+        if (isRefresh) {
+            if (mRefreshListener != null) {
+                mRefreshListener.Refresh();
+            }
+        }
+        if (commonBean.getResult() != null) {
             String stat = commonBean.getResult().getStat();
             if ("1".equals(stat)) {
                 recyclerListAdapter.getData().clear();
@@ -79,9 +87,10 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
                 recyclerListAdapter.setData(data);
                 recyclerListAdapter.notifyDataSetChanged();
             }
-        }else {
+        } else {
             showToast(reason);
         }
+        isRefresh = false;
 
 
     }
@@ -119,8 +128,10 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
     @Override
     public void initData() {
         super.initData();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         bannerHeight = xbanner.getLayoutParams().height;
-        recycler_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        recycler_list.setLayoutManager(linearLayoutManager);
         recyclerListAdapter = new RecyclerListAdapter(getActivity(), list);
         recycler_list.setAdapter(recyclerListAdapter);
         recycler_list.setHasFixedSize(true);
@@ -183,6 +194,7 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        isRefresh = true;
         //获取新闻列表的数据
         getPresenter().getData();
     }
@@ -223,5 +235,9 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
                         .init();
             }
         }
+    }
+
+    public static void setOnRefreshListener(RefreshListener refreshListener) {
+        mRefreshListener = refreshListener;
     }
 }

@@ -19,8 +19,9 @@
         android:scrollbars="none"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
+            android:orientation="vertical"
             android:layout_height="match_parent">
 
             <com.stx.xhb.xbanner.XBanner
@@ -36,24 +37,6 @@
                 app:pointsVisibility="true"
                 app:tipTextSize="@dimen/dp_12" />
 
-            <TextView
-                android:id="@+id/news"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/xbanner"
-                android:text="@string/news"
-                android:textColor="@color/color_black"
-                android:textSize="@dimen/dp_30"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:layout_below="@+id/news"
-                android:background="@color/background"
-                android:visibility="gone" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_list"
                 android:layout_width="match_parent"
@@ -62,11 +45,9 @@
                 android:layout_marginTop="@dimen/dp_4"
                 android:scrollbars="none" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-
 
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

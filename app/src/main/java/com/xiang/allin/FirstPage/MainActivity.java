@@ -1,10 +1,23 @@
 package com.xiang.allin.FirstPage;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,10 +30,12 @@ import com.xiang.allin.FirstPage.fr.FirstPageFragment;
 import com.xiang.allin.R;
 import com.xiang.allin.base.ac.BaseActivity;
 import com.xiang.allin.chatpage.ChatPageFragment;
+import com.xiang.allin.listener.RefreshListener;
 import com.xiang.allin.onlinepage.OnlinePageFragment;
 import com.xiang.allin.videopage.VideoPageFragment;
+import com.xiang.allin.view.BezierTypeEvaluator;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
+public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener, RefreshListener {
 
     private FrameLayout main_frame;
     private BottomNavigationBar bottom_nav_bar;
@@ -31,6 +46,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private VideoPageFragment videoPageFragment;
     private ChatPageFragment chatPageFragment;
     private OnlinePageFragment onlinePageFragment;
+    private int tabPosition = 0;
+    private int sePosition = 0;
 
     @Override
     protected int getLayoutId() {
@@ -61,6 +78,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         initBar();
         initBottomNavigationBar();
         initFragment();
+        FirstPageFragment.setOnRefreshListener(this);
     }
 
     private void initFragment() {
@@ -97,16 +115,18 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
          *添加导航按钮
          */
         bottom_nav_bar.addItem(
-                new BottomNavigationItem(R.mipmap.xx3,"首页"))
-                .addItem(new BottomNavigationItem(R.mipmap.xx3,"视频").setBadgeItem(badgeItem))
-                .addItem(new BottomNavigationItem(R.mipmap.xx3,"聊天").setBadgeItem(badgeItem))
-                .addItem(new BottomNavigationItem(R.mipmap.xx3,"直播").setBadgeItem(badgeItem))//添加小红点数据
+                new BottomNavigationItem(R.mipmap.xx3, "首页"))
+                .addItem(new BottomNavigationItem(R.mipmap.xx3, "视频").setBadgeItem(badgeItem))
+                .addItem(new BottomNavigationItem(R.mipmap.xx3, "聊天").setBadgeItem(badgeItem))
+                .addItem(new BottomNavigationItem(R.mipmap.xx3, "直播").setBadgeItem(badgeItem))//添加小红点数据
                 .initialise();//initialise 一定要放在 所有设置的最后一项
     }
 
     @Override
     public void onTabSelected(int position) {
-        switch (position){
+        tabPosition = (position + 1);
+        sePosition = position;
+        switch (position) {
             case 0:
                 switchFragment(firstPageFragment);
                 break;
@@ -124,14 +144,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     private void switchFragment(Fragment fragment) {
         //判断当前显示的Fragment是不是切换的Fragment
-        if(mFragment != fragment) {
+        if (mFragment != fragment) {
             //判断切换的Fragment是否已经添加过
             if (!fragment.isAdded()) {
                 //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
                 getSupportFragmentManager()
                         .beginTransaction()
                         .hide(mFragment)
-                        .add(R.id.main_frame,fragment)
+                        .add(R.id.main_frame, fragment)
                         .commit();
             } else {
                 //如果已经添加过，则先把当前的Fragment隐藏，把切换的Fragment显示出来
@@ -168,5 +188,70 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void Refresh() {
+        View at = bottom_nav_bar.getChildAt(sePosition);
+        Resources resources = this.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        //贝塞尔结束数据点
+        int[] endPosition = new int[2];
+        at.getLocationInWindow(endPosition);
+
+        PointF startF = new PointF();
+        PointF endF = new PointF();
+        PointF controllF = new PointF();
+
+        startF.x = 0;
+        startF.y = dip2px(this, 60);
+        endF.x = at.getX() / 4 * tabPosition;
+        endF.y = height-at.getY()/2;
+        controllF.x = width;
+        controllF.y = endF.y / 4;
+
+        final ImageView imageView = new ImageView(this);
+        main_frame.addView(imageView);
+        imageView.setImageResource(R.mipmap.xx);
+        imageView.getLayoutParams().width = dip2px(this, 40);
+        imageView.getLayoutParams().height = dip2px(this, 40);
+        imageView.setVisibility(View.VISIBLE);
+        imageView.setX(0);
+        imageView.setY(height / 7);
+
+        ValueAnimator valueAnimator = ValueAnimator.ofObject(new BezierTypeEvaluator(controllF), startF, endF);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                PointF pointF = (PointF) animation.getAnimatedValue();
+                imageView.setX(pointF.x);
+                imageView.setY(pointF.y);
+            }
+        });
+
+
+        ObjectAnimator objectAnimatorX = new ObjectAnimator().ofFloat(at, "scaleX", 0.8f, 1.0f);
+        ObjectAnimator objectAnimatorY = new ObjectAnimator().ofFloat(at, "scaleY", 0.8f, 1.0f);
+        objectAnimatorX.setInterpolator(new AccelerateInterpolator());
+        objectAnimatorY.setInterpolator(new AccelerateInterpolator());
+        AnimatorSet set = new AnimatorSet();
+//        set.play(objectAnimatorX).with(objectAnimatorY).after(valueAnimator);
+        set.play(valueAnimator);
+        set.setDuration(800);
+        set.start();
+    }
+
+    public int dip2px(Context context, float dipValue) {
+        return (int) (dipValue * (getScreenDensity(context) / 160f) + 0.5f);
+    }
+
+    @SuppressWarnings("deprecation")
+    public int getScreenDensity(Context context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm.densityDpi;
+
     }
 }
