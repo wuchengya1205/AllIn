@@ -10,7 +10,7 @@
             android:dither="true"
             android:filter="true"
             android:gravity="fill"
-            android:src="@drawable/welcome"
+            android:src="@mipmap/welcome"
             android:tileMode="disabled" />
     </item>
 

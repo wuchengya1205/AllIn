@@ -7,7 +7,7 @@
     <color name="colorWhite80">#80FFFFFF</color>
     <color name="color_000000">#000000</color>
     <color name="color_238AFF">#238AFF</color>
-    <color name="color_red">#ff00</color>
+    <color name="color_red">#FFFF0000</color>
     <color name="pointsContainerBackground">#1003A9F4</color>
     <color name="background">#ac000000</color>
     <color name="color_black">#000</color>

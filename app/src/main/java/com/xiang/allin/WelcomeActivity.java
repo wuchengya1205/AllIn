@@ -8,18 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xiang.allin.login.LoginActivity;
-import com.xiang.allin.login.LoginPresenter;
 import com.xiang.allin.view.CountdownDrawable;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,7 +29,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         if (animator != null){
             animator.cancel();
         }
-        mCdDrawable = new CountdownDrawable(getResources().getDimensionPixelSize(R.dimen.dp_4), getResources().getColor(R.color.dark_grey), getResources().getColor(R.color.cheng), getResources().getColor(R.color.holo_green_light), 3, getResources().getColor(R.color.colorWhite));
+        mCdDrawable = new CountdownDrawable(
+                getResources().getDimensionPixelSize(R.dimen.dp_4), getResources().getColor(R.color.dark_grey), getResources().getColor(R.color.cheng), getResources().getColor(R.color.holo_green_light), 3, getResources().getColor(R.color.colorWhite));
         countdown.setImageDrawable(mCdDrawable);
         animator = prepareAnimator();
         animator.start();
@@ -53,7 +47,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.texttime){
+        if (view.getId() == R.id.texttime) {
             goActivity();
         }
     }

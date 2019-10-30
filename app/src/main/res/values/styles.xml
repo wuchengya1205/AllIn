@@ -9,11 +9,8 @@
     </style>
 
     <style name="WelcomeTheme"  parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@drawable/welcome</item>
-<!--        <item name="android:background">@drawable/welcome_bg</item>-->
+        <item name="android:windowBackground">@mipmap/welcome</item>
     </style>
 
 </resources>

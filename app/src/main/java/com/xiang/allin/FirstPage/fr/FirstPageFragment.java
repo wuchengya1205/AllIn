@@ -112,6 +112,10 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
         super.initData();
         //设置轮播图数据
         imageList = new ArrayList<>();
+//        imageList.add("https://p3.pstatp.com/large/c0b300014a9ef7257e51.jpg");
+//        imageList.add("https://p3.pstatp.com/large/b8410004ef57355b50cf.jpg");
+//        imageList.add("https://p1.pstatp.com/large/bd8f000561db440796dd.jpg");
+        imageList.add("https://p98.pstatp.com/large/c0a10007f2fc822bc278.jpg");
         imageList.add("http://www.pptok.com/wp-content/uploads/2012/08/xunguang-7.jpg");
         imageList.add("http://imageprocess.yitos.net/images/public/20160910/99381473502384338.jpg");
         imageList.add("http://imageprocess.yitos.net/images/public/20160910/77991473496077677.jpg");
@@ -123,7 +127,7 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
                 Glide.with(getActivity()).load(imageList.get(position)).into((ImageView) view);
             }
         });
-        xbanner.setPageTransformer(Transformer.Scale);
+//        xbanner.setPageTransformer(Transformer.Scale);
         //设置轮播图点击监听
         xbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
             @Override
