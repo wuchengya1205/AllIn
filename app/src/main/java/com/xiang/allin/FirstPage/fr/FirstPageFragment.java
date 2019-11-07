@@ -1,39 +1,34 @@
 package com.xiang.allin.FirstPage.fr;
 
-import android.content.Intent;
-import android.os.Build;
+
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.widget.NestedScrollView;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
-import com.gyf.barlibrary.BarHide;
-import com.gyf.barlibrary.ImmersionBar;
+import com.google.android.material.tabs.TabLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.stx.xhb.xbanner.XBanner;
-import com.stx.xhb.xbanner.transformers.Transformer;
-import com.xiang.allin.FirstPage.adapter.RecyclerListAdapter;
-import com.xiang.allin.R;
-import com.xiang.allin.WebViewActivity;
-import com.xiang.allin.base.fr.BaseMvpFragment;
+import com.xiang.allin.FirstPage.contract.FirstPageContract;
 import com.xiang.allin.FirstPage.presenter.FirstPagePresenter;
-import com.xiang.allin.common.CommonBean;
-import com.xiang.allin.FirstPage.FirstPageContract;
+import com.xiang.allin.FirstPage.view.BannerViewPager;
+import com.xiang.allin.R;
+import com.xiang.allin.base.fr.BaseMvpFragment;
+
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * author : wuchengya
@@ -43,19 +38,16 @@ import java.util.Map;
  * desc   :ohuo
  * version: 1.0
  */
-public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresenter> implements FirstPageContract.IView, XBanner.OnItemClickListener, OnRefreshListener, RecyclerListAdapter.setOnItemClickListener, NestedScrollView.OnScrollChangeListener {
+public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresenter> implements FirstPageContract.IView, OnRefreshListener, OnLoadMoreListener {
 
     private List<String> imageList;
-    private RecyclerView recycler_list;
-    private XBanner xbanner;
-    private Transformer[] transformers = {Transformer.Rotate, Transformer.Cube,
-            Transformer.Flip, Transformer.Accordion, Transformer.ZoomFade, Transformer.ZoomStack,
-            Transformer.Stack, Transformer.Depth, Transformer.Zoom};
-    private SmartRefreshLayout smartRefreshLayout;
-    private RecyclerListAdapter recyclerListAdapter;
-    private List<CommonBean.ResultBean.DataBean> list = new ArrayList<>();
-    private NestedScrollView nestedScrollView;
-    private int bannerHeight;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private List<String>titles = new ArrayList<>();
+    String key = "61005cfc63a8075c88d5d408ba90aff9";
+    String type = "";
+    private BannerViewPager banner;
+    private SmartRefreshLayout refreshLayout;
 
     @Override
     protected int getLayoutId() {
@@ -63,37 +55,11 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
     }
 
     @Override
-    public void getDataSuccess(CommonBean commonBean) {
-        String reason = commonBean.getReason();
-        smartRefreshLayout.finishRefresh();
-//        //设置轮播图数据
-//        setXBanner();
-        // 设置XBanner的页面切换特效，有多个，其他的可以到网上去查
-//        xbanner.setPageTransformer(randomTransformer());
-        if (commonBean.getResult() != null){
-            String stat = commonBean.getResult().getStat();
-            if ("1".equals(stat)) {
-                recyclerListAdapter.getData().clear();
-                List<CommonBean.ResultBean.DataBean> data = commonBean.getResult().getData();
-                recyclerListAdapter.setData(data);
-                recyclerListAdapter.notifyDataSetChanged();
-            }
-        }else {
-            showToast(reason);
+    public void getDataSuccess() {
         }
-
-
-    }
 
     @Override
     public void getDataError(String msg) {
-        showToast(msg);
-        Log.d("wwwwwwwwwwww", msg);
-    }
-
-    @Override
-    public Map<String, String> getParams() {
-        return null;
     }
 
     @Override
@@ -109,103 +75,91 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
     @Override
     public void initView() {
         super.initView();
-        xbanner = getActivity().findViewById(R.id.xbanner);
-        recycler_list = getActivity().findViewById(R.id.recycler_list);
-        smartRefreshLayout = getActivity().findViewById(R.id.smartRefreshLayout);
-        nestedScrollView = getActivity().findViewById(R.id.nestedScrollView);
+        tabLayout = getActivity().findViewById(R.id.tabLayout);
+        viewPager = getActivity().findViewById(R.id.viewPager);
+        banner = getActivity().findViewById(R.id.banner);
+        refreshLayout = getActivity().findViewById(R.id.refreshLayout);
     }
 
     @Override
     public void initData() {
         super.initData();
+        initTitles();
+        initViewPagers();
         setXBanner();
-        bannerHeight = xbanner.getLayoutParams().height;
-        recycler_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerListAdapter = new RecyclerListAdapter(getActivity(), list);
-        recycler_list.setAdapter(recyclerListAdapter);
-        recycler_list.setHasFixedSize(true);
-        recycler_list.setNestedScrollingEnabled(false);
-        xbanner.setPageChangeDuration(1000);
-        //设置轮播图点击监听
-        xbanner.setOnItemClickListener(this);
-        smartRefreshLayout.setOnRefreshListener(this);
-        recyclerListAdapter.setOnItem(this);
-        nestedScrollView.setOnScrollChangeListener(this);
-        //获取新闻列表的数据
-        getPresenter().getData();
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setOnLoadMoreListener(this);
     }
+
+    private void initViewPagers() {
+        viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return titles.get(position);
+            }
+
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                InFirstPageFragment inFirstPageFragment = new InFirstPageFragment();
+//                InFirstPageFragment inFirstPageFragment = InFirstPageFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putString("type", gettype(position));
+                bundle.putString("key",key);
+                inFirstPageFragment.setArguments(bundle);
+                return  inFirstPageFragment;
+            }
+
+            @Override
+            public int getCount() {
+                return titles.size();
+            }
+
+            @Override
+            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                super.destroyItem(container, position, object);
+            }
+
+        });
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(titles.size());
+    }
+
 
     private void setXBanner() {
         //设置轮播图数据
         imageList = new ArrayList<>();
-        imageList.clear();
-//        imageList.add("https://p3.pstatp.com/large/c0b300014a9ef7257e51.jpg");
-//        imageList.add("https://p3.pstatp.com/large/b8410004ef57355b50cf.jpg");
-//        imageList.add("https://p1.pstatp.com/large/bd8f000561db440796dd.jpg");
-        imageList.add("https://p98.pstatp.com/large/c0a10007f2fc822bc278.jpg");
-        imageList.add("http://www.pptok.com/wp-content/uploads/2012/08/xunguang-7.jpg");
-        imageList.add("http://imageprocess.yitos.net/images/public/20160910/99381473502384338.jpg");
-        imageList.add("http://imageprocess.yitos.net/images/public/20160910/77991473496077677.jpg");
-        imageList.add("http://imageprocess.yitos.net/images/public/20160906/1291473163104906.jpg");
-        xbanner.setData(imageList, null);
-        xbanner.loadImage(new XBanner.XBannerAdapter() {
-            @Override
-            public void loadBanner(XBanner banner, Object model, View view, int position) {
-                Glide.with(getActivity()).load(imageList.get(position)).into((ImageView) view);
-            }
-        });
-//        xbanner.setPageTransformer(Transformer.Scale);
-        //设置轮播图点击监听
-        xbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
-            @Override
-            public void onItemClick(XBanner banner, Object model, View view, int position) {
-                Toast.makeText(getActivity(), "点击了"+position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        //获取新闻列表的数据
-        getPresenter().getData();
-    }
-
-    private Transformer randomTransformer() {
-        int a = (int) (Math.random() * transformers.length);
-        Log.d("TAG", "----样式------" + a);
-        return transformers[a];
+        imageList.add("http://ww1.sinaimg.cn/large/0065oQSqly1g2pquqlp0nj30n00yiq8u.jpg");
+        imageList.add("https://ww1.sinaimg.cn/large/0065oQSqly1g2hekfwnd7j30sg0x4djy.jpg");
+        imageList.add("https://ws1.sinaimg.cn/large/0065oQSqly1g0ajj4h6ndj30sg11xdmj.jpg");
+        imageList.add("https://ws1.sinaimg.cn/large/0065oQSqly1fytdr77urlj30sg10najf.jpg");
+        imageList.add("https://ws1.sinaimg.cn/large/0065oQSqly1fymj13tnjmj30r60zf79k.jpg");
+        imageList.add("https://ws1.sinaimg.cn/large/0065oQSqgy1fy58bi1wlgj30sg10hguu.jpg");
+        imageList.add("https://ws1.sinaimg.cn/large/0065oQSqgy1fxno2dvxusj30sf10nqcm.jpg");
+        imageList.add("https://ws1.sinaimg.cn/large/0065oQSqgy1fxd7vcz86nj30qo0ybqc1.jpg");
+        imageList.add("https://ws1.sinaimg.cn/large/0065oQSqgy1fwyf0wr8hhj30ie0nhq6p.jpg");
+        imageList.add("https://ws1.sinaimg.cn/large/0065oQSqgy1fwgzx8n1syj30sg15h7ew.jpg");
+        banner.initBanner(imageList, false)//关闭3D画廊效果
+                .addPageMargin(20, 50)//参数1page之间的间距,参数2中间item距离边界的间距
+                .addPoint(imageList.size()+2)//添加指示器
+                .addPointBottom(7)
+                .addStartTimer(2)
+                .addRoundCorners(5)//圆角
+                .finishConfig()//这句必须加
+                .addBannerListener(new BannerViewPager.OnClickBannerListener() {
+                    @Override
+                    public void onBannerClick(int position) {
+                        Log.i("test","--------------00x2");
+                    }
+                });
     }
 
     @NotNull
     @Override
     public Class<? extends FirstPageContract.IPresenter> registerPresenter() {
         return FirstPagePresenter.class;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        xbanner.startAutoPlay();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        xbanner.stopAutoPlay();
-    }
-
-    @Override
-    public void onItemClick(XBanner banner, Object model, View view, int position) {
-        Toast.makeText(getActivity(), "点击了" + position, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        //获取新闻列表的数据
-        getPresenter().getData();
-    }
-
-    @Override
-    public void onItemClickListener(int position, RecyclerListAdapter.RecyclerListHolder holder, String url) {
-        Intent intent = new Intent(getActivity(), WebViewActivity.class);
-        intent.putExtra("web", url);
-        startActivity(intent);
     }
 
     @Override
@@ -218,24 +172,51 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
 
     }
 
+    private void initTitles() {
+        titles.add("头条");
+        titles.add("社会");
+        titles.add("国内");
+        titles.add("国际");
+        titles.add("娱乐");
+        titles.add("体育");
+        titles.add("军事");
+        titles.add("科技");
+        titles.add("财经");
+        titles.add("时尚");
+    }
+
+    private String gettype(int position) {
+        if ("头条".equals(titles.get(position))){
+            type = "top";
+        }else if ("社会".equals(titles.get(position))){
+            type = "shehui";
+        }else if ("国内".equals(titles.get(position))){
+            type = "guonei";
+        }else if ("国际".equals(titles.get(position))){
+            type = "guoji";
+        }else if ("娱乐".equals(titles.get(position))){
+            type = "yule";
+        }else if ("体育".equals(titles.get(position))){
+            type = "tiyu";
+        }else if ("军事".equals(titles.get(position))){
+            type = "junshi";
+        }else if ("科技".equals(titles.get(position))){
+            type = "keji";
+        }else if ("财经".equals(titles.get(position))){
+            type = "caijing";
+        }else if ("时尚".equals(titles.get(position))){
+            type = "shishang";
+        }
+        return type;
+    }
+
     @Override
-    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        if (scrollY > oldScrollY) {
-            if (scrollY >= (bannerHeight - 115) && scrollY <= bannerHeight) {
-                ImmersionBar.with(getActivity())
-                        .statusBarColor(R.color.colorWhite)
-                        .statusBarDarkFont(true)
-                        .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR) // 隐藏导航栏或者状态栏
-                        .init();
-            }
-        }
-        if (scrollY < oldScrollY) {
-            if (scrollY <= (bannerHeight - 115) && scrollY >= (bannerHeight / 2) + 100) {
-                ImmersionBar.with(getActivity())
-                        .transparentBar()
-                        .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR) // 隐藏导航栏或者状态栏
-                        .init();
-            }
-        }
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        EventBus.getDefault().post("refresh");
+    }
+
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        EventBus.getDefault().post("loadmore");
     }
 }

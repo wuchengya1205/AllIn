@@ -53,9 +53,10 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:2.3.2-beta01'
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.1.1'
-    //图片轮播
-    implementation 'com.github.xiaohaibin:XBanner:1.6.1'   //第三方框架XBanner轮播
-    implementation 'com.github.bumptech.glide:glide:4.5.0'
+   //图片加载
+//    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation "com.facebook.fresco:fresco:1.10.0"
     //底部导航栏
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.5'
     //腾讯bugly
@@ -67,4 +68,10 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
     //没有使用特殊Header和Footer，可以不加下面这行
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
+    //TabLayout
+    implementation 'com.android.support:design:29.1.1'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    //视频缓存
+    implementation 'com.danikula:videocache:2.7.1'
+    implementation project(path: ':ijkplayer')
 }

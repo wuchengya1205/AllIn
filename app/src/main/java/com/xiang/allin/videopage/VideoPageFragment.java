@@ -1,21 +1,36 @@
 package com.xiang.allin.videopage;
 
-import android.net.Uri;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xiang.allin.R;
 import com.xiang.allin.base.fr.BaseMvpFragment;
+import com.xiang.allin.videopage.adapter.VideoAdapter;
 import com.xiang.allin.videopage.adapter.VideoListAdapter;
+import com.xiang.allin.videopage.bean.MockData;
+import com.xiang.allin.videopage.bean.VideoData;
 import com.xiang.allin.videopage.contract.VideoPageContract;
+import com.xiang.allin.videopage.listener.OnViewPagerListener;
+import com.xiang.allin.videopage.manager.ViewPagerLayoutManager;
+import com.xiang.allin.videopage.myview.Like;
+import com.xiang.allin.videopage.myview.ListVideoView;
+import com.xiang.allin.videopage.myview.MyClickListener;
 import com.xiang.allin.videopage.presenter.VideoPagePresenter;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 
 /**
@@ -26,10 +41,17 @@ import java.util.List;
  * desc   :ohuo
  * version: 1.0
  */
-public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresenter> implements VideoPageContract.IView {
+public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresenter> implements VideoPageContract.IView, View.OnClickListener, View.OnTouchListener, OnViewPagerListener {
 
     private RecyclerView video_list;
-    private List<String> videoList = new ArrayList<>();
+    private ImageView qiehuan;
+    private boolean isRotation = false;
+    private ObjectAnimator rotation;
+    private RecyclerView video_list2;
+    private List<VideoData> mockVideoData;
+    private ViewPagerLayoutManager pagerLayoutManager;
+    private VideoAdapter videoAdapter;
+    private Like like;
 
     @Override
     protected int getLayoutId() {
@@ -40,28 +62,48 @@ public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresen
     public void initView() {
         super.initView();
         video_list = getActivity().findViewById(R.id.video_list);
+        video_list2 = getActivity().findViewById(R.id.video_list2);
+        qiehuan = getActivity().findViewById(R.id.qiehuan);
+        like = getActivity().findViewById(R.id.like);
+        qiehuan.setOnClickListener(this);
 
     }
 
     @Override
     public void initData() {
         super.initData();
-        videoList.add("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200fd30000befl25pcgf3dsrv6mmog&line=0");
-        videoList.add("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200fa90000bee4qrqr863tt0o22t50&line=0");
-        videoList.add("https://oimryzjfe.qnssl.com/content/fe9cfd1402bb40490bc9a208db7c0921.mp4");
-        videoList.add("https://oimryzjfe.qnssl.com/content/47465d359406bb4b68c8c205e2974807.mp4");
-        videoList.add("https://oimryzjfe.qnssl.com/content/93fcbd491e40159e949bb4cb191e231e.mp4");
-        videoList.add("https://oimryzjfe.qnssl.com/content/beee1c9325330b845b13298842f711ff.mp4");
-        videoList.add("https://oimryzjfe.qnssl.com/content/807403BE56FD9503A609975B81BA4636.mp4");
-        videoList.add("https://oimryzjfe.qnssl.com/content/68239E7D6DC93D98E083137F0C537D97.mp4");
-        videoList.add("https://oimryzjfe.qnssl.com/content/afc192cfae2df1366d7268bc7a181555.mp4");
-        videoList.add("https://oimryzjfe.qnssl.com/content/2c61c7c5e95b3f4dec31aa42e4315bb1.mp4");
-        videoList.add("https://oimryzjfe.qnssl.com/content/0fcbbe738abf1bf524dc2e7818200cc8.mp4");
-        video_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        VideoListAdapter videoListAdapter = new VideoListAdapter(getActivity(), videoList);
+        mockVideoData = MockData.getMockVideoData();
+        setRecyclerView();
+    }
+
+    private void setRecyclerView() {
+        video_list.setVisibility(View.VISIBLE);
+        video_list.setLayoutManager(new LinearLayoutManager(getContext()));
+        VideoListAdapter videoListAdapter = new VideoListAdapter(getActivity(), mockVideoData);
         video_list.setAdapter(videoListAdapter);
     }
 
+    private void setRecyclerView2() {
+        if (pagerLayoutManager == null){
+            pagerLayoutManager = new ViewPagerLayoutManager(getContext(), LinearLayoutManager.VERTICAL);
+        }
+        pagerLayoutManager.setOnViewPagerListener(this);
+        videoAdapter = new VideoAdapter(getActivity(), video_list2,mockVideoData);
+        video_list2.setLayoutManager(pagerLayoutManager);
+        video_list2.setAdapter(videoAdapter);
+        video_list2.setOnTouchListener(this);
+        like.setOnClickListener(new MyClickListener.MyClickCallBack() {
+            @Override
+            public void oneClick() {
+                showToast("点了一次");
+            }
+
+            @Override
+            public void doubleClick() {
+                showToast("点了好几次");
+            }
+        });
+    }
     @NotNull
     @Override
     public Class<? extends VideoPageContract.IPresenter> registerPresenter() {
@@ -76,5 +118,117 @@ public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresen
     @Override
     public void dismissLoading() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.qiehuan){
+            xuanzhuan();
+        }
+    }
+
+    private void xuanzhuan() {
+        AnimatorSet animatorSet = new AnimatorSet();
+        if (!isRotation){
+            rotation = ObjectAnimator.ofFloat(qiehuan, "rotation", 0f,-90f);
+            isRotation = true;
+        }else {
+            rotation = ObjectAnimator.ofFloat(qiehuan, "rotation", -90f,0f);
+            isRotation = false;
+        }
+        animatorSet.play(rotation);
+        animatorSet.setDuration(1000);
+        animatorSet.start();
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (isRotation){
+                    video_list.setVisibility(View.GONE);
+                    video_list2.setVisibility(View.VISIBLE);
+                    like.setVisibility(View.VISIBLE);
+                    setRecyclerView2();
+                    showToast("转过来");
+                }else {
+                    video_list.setVisibility(View.VISIBLE);
+                    video_list2.setVisibility(View.GONE);
+                    like.setVisibility(View.GONE);
+                    setRecyclerView();
+                    showToast("转回去");
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        final int action = motionEvent.getActionMasked();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN://手指按下
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                break;
+            case MotionEvent.ACTION_MOVE://手指移动（从手指按下到抬起 move多次执行）
+                break;
+            case MotionEvent.ACTION_UP://手指抬起
+                if (video_list2.getScrollState() == RecyclerView.SCROLL_STATE_DRAGGING &&
+                        pagerLayoutManager.findSnapPosition() == 0) {
+                    if (video_list2.getChildAt(0).getY() == 0 &&
+                            video_list2.canScrollVertically(1)) {//下滑操作
+                        video_list2.stopScroll();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onInitComplete() {
+        playVideo(0);
+    }
+
+    @Override
+    public void onPageSelected(int position, boolean isBottom) {
+        playVideo(position);
+    }
+
+    @Override
+    public void onPageRelease(boolean isNext, int position) {
+        releaseVideo(position);
+    }
+
+    private void playVideo(int position) {
+        final VideoAdapter.VideoViewHolder viewHolder = (VideoAdapter.VideoViewHolder) video_list2.findViewHolderForLayoutPosition(position);
+        VideoData videoData = videoAdapter.getDataByPosition(position);
+        if (viewHolder != null && !viewHolder.videoView.isPlaying()) {
+            viewHolder.videoView.setVideoPath(videoData.getVideoUrl());
+            viewHolder.videoView.getMediaPlayer().setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+                @Override
+                public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
+                    if (what == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+                        viewHolder.sdvCover.setVisibility(View.INVISIBLE);
+                    }
+                    return false;
+                }
+            });
+            viewHolder.videoView.setOnVideoProgressUpdateListener(new ListVideoView.OnVideoProgressListener() {
+                @Override
+                public void onProgress(float progress, long currentTime) {
+                    Log.d("youzai", "progresss---->" + progress + "\t" + "currentTime---->" + currentTime);
+                }
+            });
+            viewHolder.videoView.setLooping(true);
+            viewHolder.videoView.prepareAsync();
+        }
+    }
+
+    private void releaseVideo(int position) {
+        VideoAdapter.VideoViewHolder viewHolder = (VideoAdapter.VideoViewHolder) video_list2.findViewHolderForLayoutPosition(position);
+        if (viewHolder != null) {
+            viewHolder.videoView.stopPlayback();
+            viewHolder.sdvCover.setVisibility(View.VISIBLE);
+        }
     }
 }

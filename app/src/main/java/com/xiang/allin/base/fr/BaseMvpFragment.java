@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,8 @@ import mvp.ljb.kt.view.MvpFragment;
 public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpFragment<P> {
 
 
+    private View view;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +32,14 @@ public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpF
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
+        if (view != null){
+            ViewGroup parent = (ViewGroup)view.getParent();
+            if (parent != null) {
+                parent.removeView(view);
+            }
+            return view;
+        }
+        view = inflater.inflate(getLayoutId(), container, false);
         return view;
     }
 

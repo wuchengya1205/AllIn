@@ -19,6 +19,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView countdown;
     private CountdownDrawable mCdDrawable;
     private Animator animator;
+    private ObjectAnimator progressAnimator;
+    boolean isEnd = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +45,14 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initView() {
         countdown = (ImageView) findViewById(R.id.countdown);
+        countdown.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.texttime) {
+        if (view.getId() == R.id.countdown) {
             goActivity();
+            isEnd = true;
         }
     }
 
@@ -56,27 +60,23 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         AnimatorSet animation = new AnimatorSet();
 
         // 进度条动画
-        ObjectAnimator progressAnimator = ObjectAnimator.ofFloat(mCdDrawable, "progress", 1f, 0f);
+        progressAnimator = ObjectAnimator.ofFloat(mCdDrawable, "progress", 1f, 0f);
         progressAnimator.setDuration(10000);
         progressAnimator.setInterpolator(new LinearInterpolator());
         progressAnimator.addListener(new Animator.AnimatorListener() {
-
             @Override
             public void onAnimationStart(Animator animation) {
-
             }
-
             @Override
             public void onAnimationRepeat(Animator animation) {
-
             }
-
             @Override
             public void onAnimationEnd(Animator animation) {
                 countdown.setVisibility(View.GONE);
-                goActivity();
+                if (!isEnd){
+                    goActivity();
+                }
             }
-
             @Override
             public void onAnimationCancel(Animator animation) {
                 countdown.setVisibility(View.GONE);
@@ -84,7 +84,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         // 居中的倒计时数字
-        ObjectAnimator showNumberAnimator = ObjectAnimator.ofInt(mCdDrawable, "showNumber", 5, 0);
+        ObjectAnimator showNumberAnimator = ObjectAnimator.ofInt(mCdDrawable, "showNumber", 3, 0);
         showNumberAnimator.setDuration(10000);
         showNumberAnimator.setInterpolator(new LinearInterpolator());
         animation.playTogether(progressAnimator, showNumberAnimator);

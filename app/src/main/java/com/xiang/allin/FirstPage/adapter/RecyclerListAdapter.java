@@ -106,6 +106,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void setData( List<CommonBean.ResultBean.DataBean> data){
         if (data.size() <= 0) return;
         this.data = data;
+        notifyDataSetChanged();
     }
 
     public List<CommonBean.ResultBean.DataBean> getData(){

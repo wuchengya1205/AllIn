@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.xiang.allin.R;
+import com.xiang.allin.videopage.bean.VideoData;
 
 import java.util.List;
 
@@ -26,11 +27,11 @@ import cn.jzvd.JZVideoPlayerStandard;
  */
 public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.VideoHolder> {
     private Context context;
-    private List<String> videoLists;
+    private List<VideoData> mockVideoData;
 
-    public VideoListAdapter(Context context, List<String> videoLists) {
+    public VideoListAdapter(Context context, List<VideoData> mockVideoData) {
         this.context = context;
-        this.videoLists = videoLists;
+        this.mockVideoData = mockVideoData;
     }
 
     @Override
@@ -40,13 +41,13 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
 
     @Override
     public void onBindViewHolder(@NonNull VideoHolder holder, int position) {
-            holder.jzplayer.setUp(videoLists.get(position),JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
-            Glide.with(context).load("https://p3.pstatp.com/large/c0b300014a9ef7257e51.jpg").into(holder.jzplayer.thumbImageView);
+            holder.jzplayer.setUp(mockVideoData.get(position).getVideoUrl(),JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
+            Glide.with(context).load(mockVideoData.get(position).getCoverUrl()).into(holder.jzplayer.thumbImageView);
     }
 
     @Override
     public int getItemCount() {
-        return videoLists.size();
+        return mockVideoData.size();
     }
 
     @Override

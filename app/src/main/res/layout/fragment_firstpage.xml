@@ -1,73 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/smartRefreshLayout"
+    android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:srlEnableRefresh="true">
-
-    <com.scwang.smartrefresh.header.MaterialHeader
+    android:background="#1C444444"
+    app:srlPrimaryColor="#444444"
+    app:srlAccentColor="@android:color/white"
+    app:srlEnablePreviewInEditMode="true"
+    >
+    <com.scwang.smartrefresh.layout.header.ClassicsHeader
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
-        android:layout_width="match_parent"
-        android:fillViewport="true"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
+        android:layout_height="wrap_content"/>
+        <LinearLayout
             android:layout_width="match_parent"
+            android:orientation="vertical"
             android:layout_height="match_parent">
 
-            <com.stx.xhb.xbanner.XBanner
-                android:id="@+id/xbanner"
+            <com.xiang.allin.FirstPage.view.BannerViewPager
+                android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_250"
-                app:AutoPlayTime="3000"
-                app:isAutoPlay="true"
-                app:pointLeftRightPadding="6dp"
-                app:pointNormal="@drawable/shape_noraml"
-                app:pointSelect="@drawable/shape_selected"
-                app:pointsPosition="CENTER"
-                app:pointsVisibility="true"
-                app:tipTextSize="@dimen/dp_12" />
+                android:layout_height="@dimen/dp_300"/>
 
-            <TextView
-                android:id="@+id/news"
+            <com.google.android.material.tabs.TabLayout
+                app:tabTextAppearance="@android:style/TextAppearance.Holo.Large"
+                app:tabIndicatorHeight="@dimen/dp_0"
+                android:background="@color/tab_background"
+                app:tabSelectedTextColor="@color/colorWhite"
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/xbanner"
-                android:text="@string/news"
-                android:textColor="@color/color_black"
-                android:textSize="@dimen/dp_30"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <View
+                android:layout_height="@dimen/dp_51"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:layout_below="@+id/news"
-                android:background="@color/background"
-                android:visibility="gone" />
+                android:layout_height="match_parent"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/xbanner"
-                android:layout_marginTop="@dimen/dp_4"
-                android:scrollbars="none" />
+        </LinearLayout>
 
-        </RelativeLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-
-
+    <com.scwang.smartrefresh.layout.footer.BallPulseFooter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 

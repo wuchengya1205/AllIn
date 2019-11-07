@@ -5,6 +5,7 @@
     android:layout_marginTop="@dimen/dp_8"
     android:orientation="vertical">
     <TextView
+        android:text="caonima"
         android:textSize="@dimen/sp_18"
         android:id="@+id/title"
         android:maxLines="2"

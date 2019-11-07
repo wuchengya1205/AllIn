@@ -21,4 +21,6 @@
     <color name="dark_grey">#FF54585A</color>
     <color name="holo_green_light">#FF99CC00</color>
     <color name="brightly_grey">#CF9EA2A2</color>
+    <color name="tab_background">#999999</color>
+
 </resources>
