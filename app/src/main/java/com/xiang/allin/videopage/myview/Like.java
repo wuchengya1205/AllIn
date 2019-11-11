@@ -78,7 +78,7 @@ public class Like extends RelativeLayout {
                     params.topMargin = (int) event.getY() - 300;
                     //设置图片资源
                     imageView.setImageDrawable(getResources().getDrawable(R.mipmap.
-                            heart_red));
+                            icon_home_like_after));
                     imageView.setLayoutParams(params);
                     //把IV添加到父布局当中
                     addView(imageView);

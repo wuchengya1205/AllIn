@@ -36,20 +36,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.xiang.allin.videopage.myview.Like
-        android:visibility="gone"
-        android:id="@+id/like"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.recyclerview.widget.RecyclerView
             android:visibility="gone"
             android:id="@+id/video_list2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
-    </com.xiang.allin.videopage.myview.Like>
-
-
 
 </LinearLayout>

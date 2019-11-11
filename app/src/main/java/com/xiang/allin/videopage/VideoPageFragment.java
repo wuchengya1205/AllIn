@@ -4,14 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.xiang.allin.R;
 import com.xiang.allin.base.fr.BaseMvpFragment;
 import com.xiang.allin.videopage.adapter.VideoAdapter;
@@ -21,15 +21,10 @@ import com.xiang.allin.videopage.bean.VideoData;
 import com.xiang.allin.videopage.contract.VideoPageContract;
 import com.xiang.allin.videopage.listener.OnViewPagerListener;
 import com.xiang.allin.videopage.manager.ViewPagerLayoutManager;
-import com.xiang.allin.videopage.myview.Like;
 import com.xiang.allin.videopage.myview.ListVideoView;
-import com.xiang.allin.videopage.myview.MyClickListener;
 import com.xiang.allin.videopage.presenter.VideoPagePresenter;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 
@@ -51,7 +46,8 @@ public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresen
     private List<VideoData> mockVideoData;
     private ViewPagerLayoutManager pagerLayoutManager;
     private VideoAdapter videoAdapter;
-    private Like like;
+    private boolean isPause = false;
+    private boolean isLove = false;
 
     @Override
     protected int getLayoutId() {
@@ -64,7 +60,6 @@ public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresen
         video_list = getActivity().findViewById(R.id.video_list);
         video_list2 = getActivity().findViewById(R.id.video_list2);
         qiehuan = getActivity().findViewById(R.id.qiehuan);
-        like = getActivity().findViewById(R.id.like);
         qiehuan.setOnClickListener(this);
 
     }
@@ -92,15 +87,30 @@ public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresen
         video_list2.setLayoutManager(pagerLayoutManager);
         video_list2.setAdapter(videoAdapter);
         video_list2.setOnTouchListener(this);
-        like.setOnClickListener(new MyClickListener.MyClickCallBack() {
+        videoAdapter.itemClickListener(new VideoAdapter.setOnItemClickListener() {
             @Override
-            public void oneClick() {
-                showToast("点了一次");
+            public void onItemClickListener(int position, VideoAdapter.VideoViewHolder holder) {
+                if (isPause){
+                    startVideo(position);
+                    isPause = false;
+                    holder.startorstop.setVisibility(View.GONE);
+                }else {
+                    pauseVideo(position);
+                    isPause = true;
+                    holder.startorstop.setVisibility(View.VISIBLE);
+                }
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void doubleClick() {
-                showToast("点了好几次");
+            public void onDoubleClick(int position, VideoAdapter.VideoViewHolder holder) {
+                    if (isLove){
+                        holder.love.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.mipmap.heart_icon,null),null,null);
+                        isLove = false;
+                    } else {
+                        holder.love.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.mipmap.icon_home_like_after,null),null,null);
+                        isLove = true;
+                    }
             }
         });
     }
@@ -145,13 +155,11 @@ public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresen
                 if (isRotation){
                     video_list.setVisibility(View.GONE);
                     video_list2.setVisibility(View.VISIBLE);
-                    like.setVisibility(View.VISIBLE);
                     setRecyclerView2();
                     showToast("转过来");
                 }else {
                     video_list.setVisibility(View.VISIBLE);
                     video_list2.setVisibility(View.GONE);
-                    like.setVisibility(View.GONE);
                     setRecyclerView();
                     showToast("转回去");
                 }
@@ -187,18 +195,21 @@ public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresen
     @Override
     public void onInitComplete() {
         playVideo(0);
+        yingcang(0);
     }
 
     @Override
     public void onPageSelected(int position, boolean isBottom) {
         playVideo(position);
+        yingcang(position);
     }
 
     @Override
     public void onPageRelease(boolean isNext, int position) {
         releaseVideo(position);
+        yingcang(position);
     }
-
+    //开始播放
     private void playVideo(int position) {
         final VideoAdapter.VideoViewHolder viewHolder = (VideoAdapter.VideoViewHolder) video_list2.findViewHolderForLayoutPosition(position);
         VideoData videoData = videoAdapter.getDataByPosition(position);
@@ -223,7 +234,27 @@ public class VideoPageFragment extends BaseMvpFragment<VideoPageContract.IPresen
             viewHolder.videoView.prepareAsync();
         }
     }
+    private void yingcang(int position){
+        VideoAdapter.VideoViewHolder viewHolder = (VideoAdapter.VideoViewHolder) video_list2.findViewHolderForLayoutPosition(position);
+        viewHolder.startorstop.setVisibility(View.GONE);
+    }
 
+    //暂停播放
+    private  void  pauseVideo(int position){
+        final VideoAdapter.VideoViewHolder viewHolder = (VideoAdapter.VideoViewHolder) video_list2.findViewHolderForLayoutPosition(position);
+        if (viewHolder != null && viewHolder.videoView.isPlaying()) {
+            viewHolder.videoView.pause();
+        }
+    }
+    //继续播放
+    private void startVideo(int position){
+        final VideoAdapter.VideoViewHolder viewHolder = (VideoAdapter.VideoViewHolder) video_list2.findViewHolderForLayoutPosition(position);
+        if (viewHolder != null && !viewHolder.videoView.isPlaying()) {
+            viewHolder.videoView.start();
+        }
+    }
+
+    //释放视频资源
     private void releaseVideo(int position) {
         VideoAdapter.VideoViewHolder viewHolder = (VideoAdapter.VideoViewHolder) video_list2.findViewHolderForLayoutPosition(position);
         if (viewHolder != null) {

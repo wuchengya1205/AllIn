@@ -74,4 +74,6 @@ dependencies {
     //视频缓存
     implementation 'com.danikula:videocache:2.7.1'
     implementation project(path: ':ijkplayer')
+    /*第三方库*/
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }

@@ -1,17 +1,22 @@
 package com.xiang.allin.videopage.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xiang.allin.R;
 import com.xiang.allin.videopage.bean.VideoData;
+import com.xiang.allin.videopage.myview.DoubleClickListener;
 import com.xiang.allin.videopage.myview.ListVideoView;
 import com.xiang.allin.videopage.utils.VideoUtils;
 import java.util.List;
@@ -29,7 +34,7 @@ public class VideoAdapter extends RecyclerView.Adapter{
     private Context mContext;
     private RecyclerView recyclerView;
     private List<VideoData> mockVideoData;
-    setOnItemClickListener setOnItemClickListener;
+    public setOnItemClickListener setOnItemClickListener;
 
     public VideoAdapter(Context mContext, RecyclerView recyclerView, List<VideoData> mockVideoData) {
         this.mContext = mContext;
@@ -48,6 +53,17 @@ public class VideoAdapter extends RecyclerView.Adapter{
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final VideoViewHolder holder1 = (VideoViewHolder) holder;
         holder1.sdvCover.setImageURI(mockVideoData.get(position).getCoverUrl());
+        holder1.itemView.setOnClickListener(new DoubleClickListener() {
+            @Override
+            public void onDoubleClick(View v) {
+                setOnItemClickListener.onDoubleClick(position,holder1);
+            }
+
+            @Override
+            public void onSingleClick(View v) {
+                setOnItemClickListener.onItemClickListener(position,holder1);
+            }
+        });
         fitVideoScaleType(holder1,position);
 
     }
@@ -77,11 +93,15 @@ public class VideoAdapter extends RecyclerView.Adapter{
 
         public ListVideoView videoView;
         public SimpleDraweeView sdvCover;
+        public ImageView startorstop;
+        public TextView love;
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
             videoView = itemView.findViewById(R.id.videoView);
             sdvCover = itemView.findViewById(R.id.sdv_cover);
+            startorstop = itemView.findViewById(R.id.startorstop);
+            love = itemView.findViewById(R.id.love);
         }
     }
 
@@ -89,7 +109,8 @@ public class VideoAdapter extends RecyclerView.Adapter{
         this.setOnItemClickListener = setOnItemClickListener;
     }
 
-    interface setOnItemClickListener{
+    public interface setOnItemClickListener{
         void onItemClickListener(int position ,VideoViewHolder holder);
+        void onDoubleClick(int position,VideoViewHolder holder);
     }
 }
