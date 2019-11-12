@@ -103,23 +103,20 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                InFirstPageFragment inFirstPageFragment = new InFirstPageFragment();
-//                InFirstPageFragment inFirstPageFragment = InFirstPageFragment.newInstance();
-                Bundle bundle = new Bundle();
-                bundle.putString("type", gettype(position));
-                bundle.putString("key",key);
-                inFirstPageFragment.setArguments(bundle);
-                return  inFirstPageFragment;
+//                InFirstPageFragment inFirstPageFragment = new InFirstPageFragment();
+////                InFirstPageFragment inFirstPageFragment = InFirstPageFragment.newInstance();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("type", gettype(position));
+//                bundle.putString("key",key);
+//                inFirstPageFragment.setArguments(bundle);
+
+                TestFragment testFragment = new TestFragment();
+                return  testFragment;
             }
 
             @Override
             public int getCount() {
                 return titles.size();
-            }
-
-            @Override
-            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-                super.destroyItem(container, position, object);
             }
 
         });

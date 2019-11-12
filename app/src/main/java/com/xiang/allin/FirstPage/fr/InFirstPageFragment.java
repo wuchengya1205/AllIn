@@ -62,14 +62,11 @@ public class InFirstPageFragment extends BaseMvpFragment<InFirstPageContract.IPr
         showToast(commonBean.getReason());
         if ("成功的返回".equals(commonBean.getReason())){
             if ("1".equals(commonBean.getResult().getStat())){
-                recycler_list.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerListAdapter = new RecyclerListAdapter(getContext(), dataList);
-                recycler_list.setAdapter(recyclerListAdapter);
-//                dataList.clear();
-//                dataList.addAll(commonBean.getResult().getData());
-//                if (recyclerListAdapter != null){
-//                    recyclerListAdapter.setData(dataList);
-//                }
+                dataList.clear();
+                dataList.addAll(commonBean.getResult().getData());
+                if (recyclerListAdapter != null){
+                    recyclerListAdapter.setData(dataList);
+                }
             }
         }
     }
@@ -102,9 +99,9 @@ public class InFirstPageFragment extends BaseMvpFragment<InFirstPageContract.IPr
     @Override
     public void initData() {
         super.initData();
-//        recycler_list.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerListAdapter = new RecyclerListAdapter(getContext(), dataList);
-//        recycler_list.setAdapter(recyclerListAdapter);
+        recycler_list.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerListAdapter = new RecyclerListAdapter(getContext(), dataList);
+        recycler_list.setAdapter(recyclerListAdapter);
 
     }
 
