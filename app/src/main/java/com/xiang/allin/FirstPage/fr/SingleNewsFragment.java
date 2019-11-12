@@ -31,6 +31,9 @@ public class SingleNewsFragment extends BaseMvpFragment<SingleNewsContract.IPres
     private RecyclerView mRecyclerView;
     private String tabType;
     private RecyclerListAdapter recyclerListAdapter;
+    boolean mIsPrepare = false;		//视图还没准备好
+    boolean mIsVisible= false;		//不可见
+    boolean mIsFirstLoad = true;	//第一次加载
 
     @Override
     protected int getLayoutId() {
@@ -48,6 +51,8 @@ public class SingleNewsFragment extends BaseMvpFragment<SingleNewsContract.IPres
         super.initView();
         mRecyclerView = view.findViewById(R.id.rl_news);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mIsPrepare = true;
+
     }
 
     @Override
@@ -57,18 +62,12 @@ public class SingleNewsFragment extends BaseMvpFragment<SingleNewsContract.IPres
         recyclerListAdapter = new RecyclerListAdapter(getContext(), new ArrayList<CommonBean.DataBean>());
         mRecyclerView.setAdapter(recyclerListAdapter);
         NewsFragment.setOnRefreshLoadMoreListener(this);
-
+        lazyLoad();
     }
 
     @Override
     public String getType() {
         return tabType;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getPresenter().getNewsData();
     }
 
     @Override
@@ -95,5 +94,33 @@ public class SingleNewsFragment extends BaseMvpFragment<SingleNewsContract.IPres
     @Override
     public void loadMore() {
 
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        //isVisibleToUser这个boolean值表示:该Fragment的UI 用户是否可见
+        if (isVisibleToUser) {
+            mIsVisible = true;
+            if (getView() != null){
+                lazyLoad();
+            }
+        } else {
+            mIsVisible = false;
+        }
+    }
+
+    private void lazyLoad() {
+        //这里进行三个条件的判断，如果有一个不满足，都将不进行加载
+        if (!mIsPrepare || !mIsVisible|| !mIsFirstLoad) {
+            return;
+        }
+        loadData();
+        //数据加载完毕,恢复标记,防止重复加载
+        mIsFirstLoad = false;
+    }
+
+    private void loadData() {
+        getPresenter().getNewsData();
     }
 }
