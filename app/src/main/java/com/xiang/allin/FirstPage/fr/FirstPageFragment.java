@@ -117,11 +117,6 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
                 return titles.size();
             }
 
-            @Override
-            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-                super.destroyItem(container, position, object);
-            }
-
         });
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(titles.size());

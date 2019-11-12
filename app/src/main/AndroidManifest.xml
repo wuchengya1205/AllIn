@@ -24,14 +24,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WebViewActivity"></activity>
-        <activity android:name=".FirstPage.MainActivity"
+        <activity android:name=".FirstPage.AccessActivity"></activity>
+        <activity android:name=".WebViewActivity" />
+        <activity
+            android:name=".FirstPage.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity android:name=".login.LoginActivity" />
-        <activity android:name=".WelcomeActivity"
-            android:theme="@style/WelcomeTheme"
-            >
+        <activity
+            android:name=".WelcomeActivity"
+            android:theme="@style/WelcomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,6 +41,5 @@
             </intent-filter>
         </activity>
     </application>
-
 
 </manifest>

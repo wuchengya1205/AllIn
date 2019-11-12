@@ -5,5 +5,18 @@ package com.xiang.allin.listener;
  * date : 2019/10/29
  */
 public interface RefreshListener {
-    void Refresh();
+
+    interface top {
+        void refresh();
+
+        void loadMore();
+    }
+
+    interface bottom {
+        void finishRefresh();
+
+        void finishLoadMore();
+    }
+
+
 }

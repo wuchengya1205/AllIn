@@ -47,7 +47,6 @@ public class InFirstPageFragment extends BaseMvpFragment<InFirstPageContract.IPr
     boolean mIsVisible= false;		//不可见
     boolean mIsFirstLoad = true;	//第一次加载
     private RecyclerView recycler_list;
-    List<CommonBean.ResultBean.DataBean> dataList = new ArrayList<>();
     private RecyclerListAdapter recyclerListAdapter;
     private String type;
     private String key;
@@ -59,17 +58,10 @@ public class InFirstPageFragment extends BaseMvpFragment<InFirstPageContract.IPr
 
     @Override
     public void getDataSuccess(CommonBean commonBean) {
-        showToast(commonBean.getReason());
-        if ("成功的返回".equals(commonBean.getReason())){
-            if ("1".equals(commonBean.getResult().getStat())){
-                recycler_list.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerListAdapter = new RecyclerListAdapter(getContext(), dataList);
-                recycler_list.setAdapter(recyclerListAdapter);
-//                dataList.clear();
-//                dataList.addAll(commonBean.getResult().getData());
-//                if (recyclerListAdapter != null){
-//                    recyclerListAdapter.setData(dataList);
-//                }
+        showToast(commonBean.getStat());
+        if ("1".equals(commonBean.getStat())){
+            if (recyclerListAdapter != null){
+                recyclerListAdapter.setData(commonBean.getData());
             }
         }
     }
@@ -91,21 +83,19 @@ public class InFirstPageFragment extends BaseMvpFragment<InFirstPageContract.IPr
 
     @Override
     public void initView() {
-        super.initView();
-        recycler_list = getActivity().findViewById(R.id.recycler_list);
+        recycler_list = view.findViewById(R.id.recycler_list);
         mIsPrepare = true;
         type = getArguments().getString("type");
         key = getArguments().getString("key");
-        lazyLoad();
+        recycler_list.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerListAdapter = new RecyclerListAdapter(getContext(), new ArrayList<CommonBean.DataBean>());
+        recycler_list.setAdapter(recyclerListAdapter);
     }
 
     @Override
     public void initData() {
         super.initData();
-//        recycler_list.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerListAdapter = new RecyclerListAdapter(getContext(), dataList);
-//        recycler_list.setAdapter(recyclerListAdapter);
-
+        lazyLoad();
     }
 
     @Override

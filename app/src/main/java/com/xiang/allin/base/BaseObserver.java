@@ -27,12 +27,12 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
     public final void onNext(@NonNull BaseResponse<T> data) {
         mView.dismissLoading();
         Log.i("Net","--onNext---" + data.toString());
-        T t = data.getData();
-        if (t == null){
-            onNextSN();
+        String reason = data.getReason();
+        if (!"成功的返回".equals(reason)){
+            onNextSN(data.getReason());
             return;
         }
-        onNextEx(t);
+        onNextEx(data.getResult());
     }
 
     @Override
@@ -66,7 +66,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     }
 
-    protected void onNextSN(){
+    protected void onNextSN(String msg){
 
     }
 

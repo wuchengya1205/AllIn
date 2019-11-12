@@ -21,7 +21,7 @@ import mvp.ljb.kt.view.MvpFragment;
 public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpFragment<P> {
 
 
-    private View view;
+    public View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,16 @@ public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpF
     }
 
     public void initView() {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void dismissLoading() {
 
     }
 
