@@ -3,31 +3,32 @@ package com.xiang.allin.base;
 
 public class BaseResponse<T> {
 
-    private String msg;
-    private int code;
-    private T data;
 
-    public String getMsg() {
-        return msg;
+    private String reason;
+    private T result;
+    private int error_code;
+
+    public String getReason() {
+        return reason;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
-    public int getCode() {
-        return code;
+    public T getResult() {
+        return result;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setResult(T result) {
+        this.result = result;
     }
 
-    public T getData() {
-        return data;
+    public int getError_code() {
+        return error_code;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setError_code(int error_code) {
+        this.error_code = error_code;
     }
 }

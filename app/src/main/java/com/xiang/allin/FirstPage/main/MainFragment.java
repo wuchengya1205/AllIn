@@ -1,4 +1,4 @@
-package com.xiang.allin.FirstPage;
+package com.xiang.allin.FirstPage.main;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -8,9 +8,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
@@ -24,16 +22,24 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.xiang.allin.FirstPage.contract.MainFContract;
 import com.xiang.allin.FirstPage.fr.NewsFragment;
+import com.xiang.allin.FirstPage.presenter.MainFPresenter;
 import com.xiang.allin.R;
-import com.xiang.allin.base.ac.BaseActivity;
+import com.xiang.allin.base.fr.BaseMvpFragment;
 import com.xiang.allin.chatpage.ChatPageFragment;
 import com.xiang.allin.listener.RefreshListener;
 import com.xiang.allin.onlinepage.OnlinePageFragment;
 import com.xiang.allin.videopage.VideoPageFragment;
 import com.xiang.allin.view.BezierTypeEvaluator;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * author : fengzhangwei
+ * date : 2019/11/12
+ */
+public class MainFragment extends BaseMvpFragment<MainFContract.IPresenter> implements MainFContract.IView, BottomNavigationBar.OnTabSelectedListener, RefreshListener.bottom {
 
     private FrameLayout main_frame;
     private BottomNavigationBar bottom_nav_bar;
@@ -49,19 +55,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.fragment_main;
     }
 
+    @NotNull
     @Override
-    public void init(Bundle savedInstanceState) {
-        super.init(savedInstanceState);
+    public Class<? extends MainFContract.IPresenter> registerPresenter() {
+        return MainFPresenter.class;
     }
 
     @Override
     public void initView() {
         super.initView();
-        main_frame = findViewById(R.id.main_frame);
-        bottom_nav_bar = findViewById(R.id.bottom_nav_bar);
+        main_frame = view.findViewById(R.id.main_frame);
+        bottom_nav_bar = view.findViewById(R.id.bottom_nav_bar);
     }
 
     private void initBar() {
@@ -83,13 +90,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         videoPageFragment = new VideoPageFragment();
         chatPageFragment = new ChatPageFragment();
         onlinePageFragment = new OnlinePageFragment();
-        transaction = getSupportFragmentManager().beginTransaction();
+        transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.main_frame, firstPageFragment).commit();
         mFragment = firstPageFragment;
+        firstPageFragment.setOnRefreshLoadMoreListener(this);
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         initBar();
     }
@@ -139,29 +147,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         }
     }
 
-    private void switchFragment(Fragment fragment) {
-        //判断当前显示的Fragment是不是切换的Fragment
-        if (mFragment != fragment) {
-            //判断切换的Fragment是否已经添加过
-            if (!fragment.isAdded()) {
-                //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .hide(mFragment)
-                        .add(R.id.main_frame, fragment)
-                        .commit();
-            } else {
-                //如果已经添加过，则先把当前的Fragment隐藏，把切换的Fragment显示出来
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .hide(mFragment)
-                        .show(fragment)
-                        .commit();
-            }
-            mFragment = fragment;
-        }
-    }
-
     @Override
     public void onTabUnselected(int position) {
 
@@ -172,19 +157,33 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ImmersionBar.with(this).destroy();
+    private void switchFragment(Fragment fragment) {
+        //判断当前显示的Fragment是不是切换的Fragment
+        if (mFragment != fragment) {
+            //判断切换的Fragment是否已经添加过
+            if (!fragment.isAdded()) {
+                //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .hide(mFragment)
+                        .add(R.id.main_frame, fragment)
+                        .commit();
+            } else {
+                //如果已经添加过，则先把当前的Fragment隐藏，把切换的Fragment显示出来
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .hide(mFragment)
+                        .show(fragment)
+                        .commit();
+            }
+            mFragment = fragment;
+        }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(false);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onDestroy() {
+        super.onDestroy();
+        ImmersionBar.with(this).destroy();
     }
 
     public void Refresh() {
@@ -202,17 +201,17 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         PointF controllF = new PointF();
 
         startF.x = 0;
-        startF.y = dip2px(this, 60);
+        startF.y = dip2px(getContext(), 60);
         endF.x = at.getX() / 4 * tabPosition;
         endF.y = height-at.getY()/2;
         controllF.x = width;
         controllF.y = endF.y / 4;
 
-        final ImageView imageView = new ImageView(this);
+        final ImageView imageView = new ImageView(getContext());
         main_frame.addView(imageView);
         imageView.setImageResource(R.mipmap.xx);
-        imageView.getLayoutParams().width = dip2px(this, 40);
-        imageView.getLayoutParams().height = dip2px(this, 40);
+        imageView.getLayoutParams().width = dip2px(getContext(), 40);
+        imageView.getLayoutParams().height = dip2px(getContext(), 40);
         imageView.setVisibility(View.VISIBLE);
         imageView.setX(0);
         imageView.setY(height / 7);
@@ -252,4 +251,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
 
+    @Override
+    public void finishRefresh() {
+        Refresh();
+    }
+
+
+    @Override
+    public void finishLoadMore() {
+
+    }
 }

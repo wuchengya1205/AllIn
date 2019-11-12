@@ -24,19 +24,19 @@
             android:id="@+id/image1"
             android:layout_weight="1"
             android:layout_width="@dimen/dp_0"
-            android:layout_height="wrap_content"/>
+            android:layout_height="60dp"/>
         <ImageView
             android:padding="@dimen/dp_5"
             android:id="@+id/image2"
             android:layout_weight="1"
             android:layout_width="@dimen/dp_0"
-            android:layout_height="wrap_content"/>
+            android:layout_height="60dp"/>
         <ImageView
             android:padding="@dimen/dp_5"
             android:id="@+id/image3"
             android:layout_weight="1"
             android:layout_width="@dimen/dp_0"
-            android:layout_height="wrap_content"/>
+            android:layout_height="60dp"/>
     </LinearLayout>
 
     <LinearLayout

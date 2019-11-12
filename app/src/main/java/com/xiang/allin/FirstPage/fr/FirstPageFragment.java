@@ -103,15 +103,15 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
             @NonNull
             @Override
             public Fragment getItem(int position) {
-//                InFirstPageFragment inFirstPageFragment = new InFirstPageFragment();
-////                InFirstPageFragment inFirstPageFragment = InFirstPageFragment.newInstance();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("type", gettype(position));
-//                bundle.putString("key",key);
-//                inFirstPageFragment.setArguments(bundle);
+                InFirstPageFragment inFirstPageFragment = new InFirstPageFragment();
+//                InFirstPageFragment inFirstPageFragment = InFirstPageFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putString("type", gettype(position));
+                bundle.putString("key",key);
+                inFirstPageFragment.setArguments(bundle);
 
-                TestFragment testFragment = new TestFragment();
-                return  testFragment;
+//                TestFragment testFragment = new TestFragment();
+                return  inFirstPageFragment;
             }
 
             @Override

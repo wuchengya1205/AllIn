@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.xiang.allin.FirstPage.AccessActivity;
 import com.xiang.allin.FirstPage.MainActivity;
 import com.xiang.allin.R;
 import com.xiang.allin.base.ac.BaseMvpActivity;
@@ -77,7 +78,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
     public void onClick(View v) {
         if (v.getId() == R.id.btn_login){
 //            getPresenter().login();
-            goActivity(MainActivity.class);
+            goActivity(AccessActivity.class);
             finish();
         }
     }

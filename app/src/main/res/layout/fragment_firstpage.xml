@@ -20,7 +20,7 @@
             <com.xiang.allin.FirstPage.view.BannerViewPager
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_300"/>
+                android:layout_height="200dp"/>
 
             <com.google.android.material.tabs.TabLayout
                 app:tabTextAppearance="@android:style/TextAppearance.Holo.Large"

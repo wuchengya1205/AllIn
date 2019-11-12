@@ -26,10 +26,10 @@ import java.util.List;
  */
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.RecyclerListHolder> {
     private Context context;
-    private List<CommonBean.ResultBean.DataBean> data;
+    private List<CommonBean.DataBean> data;
     private setOnItemClickListener setOnItemClickListener;
 
-    public RecyclerListAdapter(Context context, List<CommonBean.ResultBean.DataBean> data) {
+    public RecyclerListAdapter(Context context, List<CommonBean.DataBean> data) {
         this.context = context;
         this.data = data;
     }
@@ -42,22 +42,23 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerListHolder holder, final int position) {
-        holder.title.setText(data.get(position).getTitle());
-        holder.content.setText(data.get(position).getAuthor_name());
-        holder.date.setText(data.get(position).getDate());
-        if (data.get(position).getThumbnail_pic_s() != null){
+        final CommonBean.DataBean dataBean = this.data.get(position);
+        holder.title.setText(dataBean.getTitle());
+        holder.content.setText(dataBean.getAuthor_name());
+        holder.date.setText(dataBean.getDate());
+        if (dataBean.getThumbnail_pic_s() != null){
             holder.image1.setVisibility(View.VISIBLE);
-            Glide.with(context).load(data.get(position).getThumbnail_pic_s()).into(holder.image1);
+            Glide.with(context).load(dataBean.getThumbnail_pic_s()).into(holder.image1);
         }
-        if (data.get(position).getThumbnail_pic_s02() != null){
+        if (dataBean.getThumbnail_pic_s02() != null){
             holder.image2.setVisibility(View.VISIBLE);
-            Glide.with(context).load(data.get(position).getThumbnail_pic_s()).into(holder.image2);
+            Glide.with(context).load(dataBean.getThumbnail_pic_s()).into(holder.image2);
         }else {
             holder.image2.setVisibility(View.GONE);
         }
-        if (data.get(position).getThumbnail_pic_s03() != null){
+        if (dataBean.getThumbnail_pic_s03() != null){
             holder.image3.setVisibility(View.VISIBLE);
-            Glide.with(context).load(data.get(position).getThumbnail_pic_s()).into(holder.image3);
+            Glide.with(context).load(dataBean.getThumbnail_pic_s()).into(holder.image3);
         }else {
             holder.image3.setVisibility(View.GONE);
         }
@@ -67,7 +68,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setOnItemClickListener.onItemClickListener(position,holder,data.get(position).getUrl());
+                if (setOnItemClickListener != null){
+                    setOnItemClickListener.onItemClickListener(position,holder, dataBean.getUrl());
+                }
             }
         });
     }
@@ -103,13 +106,13 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     }
 
-    public void setData( List<CommonBean.ResultBean.DataBean> data){
-        if (data.size() <= 0) return;
-        this.data = data;
+    public void setData(List<CommonBean.DataBean> data){
+        if (data == null) return;
+        this.data.addAll(data);
         notifyDataSetChanged();
     }
 
-    public List<CommonBean.ResultBean.DataBean> getData(){
+    public List<CommonBean.DataBean> getData(){
         return data;
     }
 
