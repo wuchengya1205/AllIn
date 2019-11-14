@@ -1,36 +1,18 @@
 package com.xiang.allin.FirstPage.fr;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xiang.allin.FirstPage.adapter.RecyclerListAdapter;
 import com.xiang.allin.FirstPage.contract.InFirstPageContract;
 import com.xiang.allin.FirstPage.presenter.InFirstPagePresenter;
 import com.xiang.allin.R;
-import com.xiang.allin.application.AllInApplication;
 import com.xiang.allin.base.fr.BaseMvpFragment;
 import com.xiang.allin.common.CommonBean;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * author : wuchengya
@@ -58,6 +40,7 @@ public class InFirstPageFragment extends BaseMvpFragment<InFirstPageContract.IPr
 
     @Override
     public void getDataSuccess(CommonBean commonBean) {
+
         showToast(commonBean.getStat());
         if ("1".equals(commonBean.getStat())){
             if (recyclerListAdapter != null){
@@ -83,7 +66,7 @@ public class InFirstPageFragment extends BaseMvpFragment<InFirstPageContract.IPr
 
     @Override
     public void initView() {
-        recycler_list = view.findViewById(R.id.recycler_list);
+//        recycler_list = view.findViewById(R.id.recycler_list);
         mIsPrepare = true;
         type = getArguments().getString("type");
         key = getArguments().getString("key");
@@ -95,6 +78,9 @@ public class InFirstPageFragment extends BaseMvpFragment<InFirstPageContract.IPr
     @Override
     public void initData() {
         super.initData();
+        recycler_list.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerListAdapter = new RecyclerListAdapter(getContext(), dataList);
+        recycler_list.setAdapter(recyclerListAdapter);
         lazyLoad();
     }
 

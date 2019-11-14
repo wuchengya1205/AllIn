@@ -109,6 +109,8 @@ public class FirstPageFragment extends BaseMvpFragment<FirstPageContract.IPresen
                 bundle.putString("type", gettype(position));
                 bundle.putString("key",key);
                 inFirstPageFragment.setArguments(bundle);
+
+//                TestFragment testFragment = new TestFragment();
                 return  inFirstPageFragment;
             }
 
