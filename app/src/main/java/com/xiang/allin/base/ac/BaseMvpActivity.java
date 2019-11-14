@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xiang.allin.R;
+import com.xiang.allin.application.AllInApplication;
 import com.xiang.allin.base.LoadingDialog;
 import com.xiang.allin.base.NetBroadcastReceiver;
 import com.xiang.allin.base.NetChangeListener;
@@ -167,6 +168,10 @@ public abstract class BaseMvpActivity<P extends IPresenterContract> extends MvpA
     protected void onDestroy() {
         super.onDestroy();
         ImmersionBar.with(this).destroy();
+        dismissLoading();
+        if (mLoading != null){
+            mLoading = null;
+        }
     }
 
     protected abstract int getLayoutId();

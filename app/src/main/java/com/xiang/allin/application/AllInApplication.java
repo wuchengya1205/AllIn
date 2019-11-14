@@ -56,7 +56,7 @@ public class AllInApplication extends Application {
      * 公共Header
      * @return
      */
-    private HashMap<String,String> getHeader(){
+    public static HashMap<String,String> getHeader(){
         HashMap<String, String> hashMap = new HashMap<>();
         return hashMap;
     }
@@ -69,7 +69,7 @@ public class AllInApplication extends Application {
      * 公共参数
      * @return
      */
-    private HashMap<String,String> getParams(){
+    public static HashMap<String,String> getParams(){
         HashMap<String, String> hashMap = new HashMap<>();
         return hashMap;
     }

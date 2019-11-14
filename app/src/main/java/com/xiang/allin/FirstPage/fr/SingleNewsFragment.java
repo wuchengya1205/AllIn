@@ -11,9 +11,13 @@ import com.xiang.allin.FirstPage.contract.NewsContract;
 import com.xiang.allin.FirstPage.contract.SingleNewsContract;
 import com.xiang.allin.FirstPage.presenter.SingleNewsPresenter;
 import com.xiang.allin.R;
+import com.xiang.allin.application.AllInApplication;
+import com.xiang.allin.base.Constant;
 import com.xiang.allin.base.fr.BaseMvpFragment;
 import com.xiang.allin.common.CommonBean;
 import com.xiang.allin.listener.RefreshListener;
+
+import net.ljb.kt.HttpConfig;
 
 import org.jetbrains.annotations.NotNull;
 

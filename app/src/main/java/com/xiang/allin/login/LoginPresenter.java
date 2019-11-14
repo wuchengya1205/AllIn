@@ -5,7 +5,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import com.xiang.allin.base.BaseMvpPresenter;
 import com.xiang.allin.base.BaseObserver;
+import com.xiang.allin.base.BaseObserverTC;
 import com.xiang.allin.protocol.IHttpProtocol;
+import com.xiang.allin.videopage.bean.LoginBean;
+
 import net.ljb.kt.client.HttpFactory;
 import java.util.HashMap;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,11 +38,12 @@ public class LoginPresenter extends BaseMvpPresenter<LoginContract.IView> implem
                 .login(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<String>(getMvpView()){
+                .subscribe(new BaseObserverTC<LoginBean>(getMvpView()){
 
                     @Override
-                    protected void onNextEx(@NonNull String data) {
+                    protected void onNextEx(@NonNull LoginBean data) {
                         Log.i("net","--------" + data);
+                        getMvpView().loginSuccess();
                     }
 
                     @Override
@@ -49,6 +53,12 @@ public class LoginPresenter extends BaseMvpPresenter<LoginContract.IView> implem
                         }else {
                             getMvpView().loginError(e.toString());
                         }
+                    }
+
+                    @Override
+                    protected void onNextSN(String msg) {
+                        super.onNextSN(msg);
+                        getMvpView().loginError(msg);
                     }
                 });
     }

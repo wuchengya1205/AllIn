@@ -1,14 +1,18 @@
 package com.xiang.allin.FirstPage.presenter;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.xiang.allin.FirstPage.contract.NewsContract;
 import com.xiang.allin.FirstPage.contract.SingleNewsContract;
 import com.xiang.allin.base.BaseMvpPresenter;
 import com.xiang.allin.base.BaseObserver;
+import com.xiang.allin.base.Constant;
 import com.xiang.allin.common.CommonBean;
 import com.xiang.allin.protocol.IHttpProtocol;
 
+import net.ljb.kt.HttpConfig;
 import net.ljb.kt.client.HttpFactory;
 
 import java.util.HashMap;
@@ -24,6 +28,7 @@ public class SingleNewsPresenter extends BaseMvpPresenter<SingleNewsContract.IVi
     @Override
     public void getNewsData() {
         getMvpView().showLoading();
+        Log.d("TAG","---URL----" + HttpConfig.INSTANCE.getBaseUrl());
         String type = getMvpView().getType();
         String key = "61005cfc63a8075c88d5d408ba90aff9";
         if (type.isEmpty()){
@@ -35,7 +40,7 @@ public class SingleNewsPresenter extends BaseMvpPresenter<SingleNewsContract.IVi
         map.put("type",type);
         map.put("key",key);
         HttpFactory.INSTANCE.getProtocol(IHttpProtocol.class)
-                .getData(map)
+                .getData(Constant.BASE_URL+"toutiao/index",map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<CommonBean>(getMvpView()) {

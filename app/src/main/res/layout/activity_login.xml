@@ -6,17 +6,11 @@
     android:id="@+id/base_net"
     android:layout_height="match_parent"
     tools:context=".login.LoginActivity">
-    <com.xiang.allin.view.snow.Snow
-        app:flakeCount="50"
-        app:minSize="50"
-        app:maxSize="70"
-        app:speedX="5"
-        app:speedY="10"
-        app:flakeSrc="@mipmap/snow_flake"
+    <View
+        android:background="@drawable/icon_welcom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <RelativeLayout
-        android:background="@mipmap/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -47,7 +41,10 @@
                     android:minWidth="@dimen/dp_150"
                     android:layout_marginRight="@dimen/dp_50"
                     android:hint="@string/writeuser"
+                    android:maxLength="11"
+                    android:textColorHint="@color/colorWhite80"
                     android:inputType="phone|number"
+                    android:textColor="@color/color_238AFF"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
@@ -71,7 +68,9 @@
                     android:layout_width="match_parent"
                     android:minWidth="@dimen/dp_150"
                     android:hint="@string/writepassword"
+                    android:textColorHint="@color/colorWhite80"
                     android:inputType="textPassword"
+                    android:textColor="@color/color_238AFF"
                     android:layout_marginRight="@dimen/dp_50"
                     android:layout_height="wrap_content" />
 
@@ -86,6 +85,8 @@
             android:layout_below="@+id/ll_input"
             android:layout_marginTop="@dimen/dp_80"
             android:text="@string/login"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/shape_white80"
             android:layout_marginRight="@dimen/dp_20"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_height="wrap_content" />

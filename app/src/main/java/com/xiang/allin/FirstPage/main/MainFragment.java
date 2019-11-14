@@ -26,12 +26,16 @@ import com.xiang.allin.FirstPage.contract.MainFContract;
 import com.xiang.allin.FirstPage.fr.NewsFragment;
 import com.xiang.allin.FirstPage.presenter.MainFPresenter;
 import com.xiang.allin.R;
+import com.xiang.allin.application.AllInApplication;
+import com.xiang.allin.base.Constant;
 import com.xiang.allin.base.fr.BaseMvpFragment;
 import com.xiang.allin.chatpage.ChatPageFragment;
 import com.xiang.allin.listener.RefreshListener;
 import com.xiang.allin.onlinepage.OnlinePageFragment;
 import com.xiang.allin.videopage.VideoPageFragment;
 import com.xiang.allin.view.BezierTypeEvaluator;
+
+import net.ljb.kt.HttpConfig;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -71,7 +75,8 @@ public class MainFragment extends BaseMvpFragment<MainFContract.IPresenter> impl
         bottom_nav_bar = view.findViewById(R.id.bottom_nav_bar);
     }
 
-    private void initBar() {
+    @Override
+    public void initBar() {
         ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR) // 隐藏导航栏或者状态栏
                 .init();
@@ -80,7 +85,6 @@ public class MainFragment extends BaseMvpFragment<MainFContract.IPresenter> impl
     @Override
     public void initData() {
         super.initData();
-        initBar();
         initBottomNavigationBar();
         initFragment();
     }

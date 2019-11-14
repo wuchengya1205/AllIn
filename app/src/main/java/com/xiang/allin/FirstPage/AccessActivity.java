@@ -13,14 +13,18 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.xiang.allin.FirstPage.main.MainFragment;
 import com.xiang.allin.FirstPage.main.MenuFragment;
 import com.xiang.allin.R;
+import com.xiang.allin.application.AllInApplication;
+import com.xiang.allin.base.Constant;
 import com.xiang.allin.base.ac.BaseActivity;
+
+import net.ljb.kt.HttpConfig;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccessActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     private List<Fragment> fList = new ArrayList<>(2);
-    private ViewPager mViewPager;
+    public static ViewPager mViewPager;
 
     @Override
     protected int getLayoutId() {
@@ -92,9 +96,17 @@ public class AccessActivity extends BaseActivity implements ViewPager.OnPageChan
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(false);
+            if (mViewPager.getCurrentItem() != 1){
+                mViewPager.setCurrentItem(1);
+            }else {
+                moveTaskToBack(false);
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public static void openHome(){
+        mViewPager.setCurrentItem(1);
     }
 }

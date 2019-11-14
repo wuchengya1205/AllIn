@@ -32,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             animator.cancel();
         }
         mCdDrawable = new CountdownDrawable(
-                getResources().getDimensionPixelSize(R.dimen.dp_4), getResources().getColor(R.color.dark_grey), getResources().getColor(R.color.cheng), getResources().getColor(R.color.holo_green_light), 3, getResources().getColor(R.color.colorWhite));
+                getResources().getDimensionPixelSize(R.dimen.dp_4), getResources().getColor(R.color.dark_grey), getResources().getColor(R.color.color_238AFF), getResources().getColor(R.color.holo_green_light), 3, getResources().getColor(R.color.colorWhite));
         countdown.setImageDrawable(mCdDrawable);
         animator = prepareAnimator();
         animator.start();
@@ -40,6 +40,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     private void goActivity() {
         startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         finish();
     }
 
@@ -51,8 +52,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.countdown) {
-            goActivity();
             isEnd = true;
+            goActivity();
         }
     }
 
@@ -61,7 +62,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
         // 进度条动画
         progressAnimator = ObjectAnimator.ofFloat(mCdDrawable, "progress", 1f, 0f);
-        progressAnimator.setDuration(10000);
+        progressAnimator.setDuration(3000);
         progressAnimator.setInterpolator(new LinearInterpolator());
         progressAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -85,7 +86,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
         // 居中的倒计时数字
         ObjectAnimator showNumberAnimator = ObjectAnimator.ofInt(mCdDrawable, "showNumber", 3, 0);
-        showNumberAnimator.setDuration(10000);
+        showNumberAnimator.setDuration(3000);
         showNumberAnimator.setInterpolator(new LinearInterpolator());
         animation.playTogether(progressAnimator, showNumberAnimator);
         return animation;

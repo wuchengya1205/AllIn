@@ -18,8 +18,12 @@ import com.xiang.allin.FirstPage.contract.NewsContract;
 import com.xiang.allin.FirstPage.presenter.NewsPresenter;
 import com.xiang.allin.FirstPage.view.BannerViewPager;
 import com.xiang.allin.R;
+import com.xiang.allin.application.AllInApplication;
+import com.xiang.allin.base.Constant;
 import com.xiang.allin.base.fr.BaseMvpFragment;
 import com.xiang.allin.listener.RefreshListener;
+
+import net.ljb.kt.HttpConfig;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -136,6 +140,7 @@ public class NewsFragment extends BaseMvpFragment<NewsContract.IPresenter> imple
         }
         isRefresh = false;
         isCreate = true;
+        smart_refresh.finishLoadMore();
     }
 
     @Override
