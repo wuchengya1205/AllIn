@@ -129,32 +129,38 @@ public class MenuFragment extends BaseMvpFragment<MenuContract.IPresenter> imple
         super.onActivityResult(requestCode, resultCode, data);
         showLoading();
         ArrayList<String> list = new ArrayList<>();
-        if (resultCode == getActivity().RESULT_OK){
-            if (requestCode == PictureConfig.CHOOSE_REQUEST){
-                Log.d("TAG","选择回调");
-                List<LocalMedia> images = PictureSelector.obtainMultipleResult(data);
-                for (int i=0;i<images.size();i++){
-                    list.add(images.get(i).getPath());
+        List<LocalMedia> images = PictureSelector.obtainMultipleResult(data);
+        if (images.size() > 0){
+            if (resultCode == getActivity().RESULT_OK){
+                if (requestCode == PictureConfig.CHOOSE_REQUEST){
+                    Log.d("TAG","选择回调");
+                    for (int i=0;i<images.size();i++){
+                        list.add(images.get(i).getPath());
+                    }
+                    fileUpLoadManager.uoLoadImageFile(list, new FileUpLoadManager.FileUpLoadCallBack() {
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d("TAG","上传失败====" + e.toString());
+                            dismissLoading();
+                        }
+
+                        @Override
+                        public void onSuccess(String url) {
+                            Log.d("TAG","上传成功");
+                            dismissLoading();
+                        }
+
+                        @Override
+                        public void onProgress(int pro,int position) {
+
+                        }
+                    });
+
                 }
-                fileUpLoadManager.uoLoadImageFile(list, new FileUpLoadManager.FileUpLoadCallBack() {
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("TAG","上传失败====" + e.toString());
-                        dismissLoading();
-                    }
-
-                    @Override
-                    public void onSuccess(String url) {
-                        Log.d("TAG","上传成功");
-                        dismissLoading();
-                    }
-
-                    @Override
-                    public void onProgress(int pro,int position) {
-
-                    }
-                });
             }
+        }else {
+            dismissLoading();
         }
+
     }
 }
