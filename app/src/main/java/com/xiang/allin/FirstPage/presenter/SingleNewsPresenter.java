@@ -27,7 +27,6 @@ import io.reactivex.schedulers.Schedulers;
 public class SingleNewsPresenter extends BaseMvpPresenter<SingleNewsContract.IView> implements SingleNewsContract.IPresenter{
     @Override
     public void getNewsData() {
-        getMvpView().showLoading();
         Log.d("TAG","---URL----" + HttpConfig.INSTANCE.getBaseUrl());
         String type = getMvpView().getType();
         String key = "61005cfc63a8075c88d5d408ba90aff9";

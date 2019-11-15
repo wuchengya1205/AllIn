@@ -70,6 +70,8 @@ dependencies {
     implementation 'com.danikula:videocache:2.7.1'
     /*第三方库*/
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    //图库
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.2'
     //lib库
     implementation project(path: ':mvplib')
     implementation project(path: ':netlib')

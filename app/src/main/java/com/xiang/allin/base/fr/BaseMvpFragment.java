@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.xiang.allin.base.LoadingDialog;
 
 import mvp.ljb.kt.contract.IPresenterContract;
 import mvp.ljb.kt.view.MvpFragment;
@@ -22,6 +23,7 @@ public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpF
 
 
     public View view;
+    private LoadingDialog mLoading;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpF
     }
 
     public void initData() {
-
+        mLoading = new LoadingDialog(getContext(),false);
     }
 
     public void initView() {
@@ -78,12 +80,16 @@ public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpF
 
     @Override
     public void showLoading() {
-
+        if (mLoading != null && !mLoading.isShowing()){
+            mLoading.show();
+        }
     }
 
     @Override
     public void dismissLoading() {
-
+        if (mLoading != null && mLoading.isShowing()){
+            mLoading.dismiss();
+        }
     }
 
     public void goActivity(Class cls){

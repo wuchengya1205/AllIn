@@ -81,7 +81,9 @@ public class BannerPagerAdapter extends PagerAdapter {
         ImageView imageView = (ImageView) view.findViewById(R.id.img);
 
         final int index=position % mList.size();
-        LoadImage(mList.get(index),imageView);
+//        LoadImage(mList.get(index),imageView);
+        Glide.with(mContext)
+                .load(mList.get(index)).into(imageView);
         //OnClick
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,23 +99,23 @@ public class BannerPagerAdapter extends PagerAdapter {
     /**
      * 加载图片
      */
-    public  void LoadImage(String url, ImageView imageview) {
-        if(mRoundCorners==-1){
-            Glide.with(mContext)
-                    .load(url)
-                    .centerCrop()
-                    .dontAnimate()//防止设置placeholder导致第一次不显示网络图片,只显示默认图片的问题
-                    .placeholder(defaultImg)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
-        } else {
-            Glide.with(mContext)
-                    .load(url)
-                    .centerCrop()
-                    .dontAnimate()//防止设置placeholder导致第一次不显示网络图片,只显示默认图片的问题
-                    .placeholder(defaultImg)
-                    .transform(new CornerTransform(mContext, mRoundCorners))
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
-        }
-    }
+//    public  void LoadImage(String url, ImageView imageview) {
+//        if(mRoundCorners==-1){
+//            Glide.with(mContext)
+//                    .load(url)
+//                    .centerCrop()
+//                    .dontAnimate()//防止设置placeholder导致第一次不显示网络图片,只显示默认图片的问题
+//                    .placeholder(defaultImg)
+//                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
+//        } else {
+//            Glide.with(mContext)
+//                    .load(url)
+//                    .centerCrop()
+//                    .dontAnimate()//防止设置placeholder导致第一次不显示网络图片,只显示默认图片的问题
+//                    .placeholder(defaultImg)
+//                    .transform(new CornerTransform(mContext, mRoundCorners))
+//                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
+//        }
+//    }
 
 }
