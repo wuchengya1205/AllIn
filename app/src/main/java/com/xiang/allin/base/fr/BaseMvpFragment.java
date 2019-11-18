@@ -6,13 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.coder.circlebar.CircleBar;
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.xiang.allin.R;
 import com.xiang.allin.base.LoadingDialog;
 
 import mvp.ljb.kt.contract.IPresenterContract;
@@ -24,6 +28,13 @@ public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpF
 
     public View view;
     private LoadingDialog mLoading;
+    private LoadingDialog mUpLoading;
+    private RelativeLayout mUpView;
+    private CircleBar mPbCircle;
+    private TextView mUpCount;
+    private int[] mColors = new int[]{0xFF123456, 0xFF369852, 0xFF147852};
+    private TextView tv_pb;
+    private int upLoadCount = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +83,13 @@ public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpF
 
     public void initData() {
         mLoading = new LoadingDialog(getContext(),false);
+        mUpLoading = new LoadingDialog(getContext(),false, R.layout.layout_pb);
+        mUpView = (RelativeLayout) mUpLoading.getView();
+        mPbCircle = mUpView.findViewById(R.id.pb_circle);
+        mUpCount = mUpView.findViewById(R.id.tv_up_count);
+        tv_pb = mUpView.findViewById(R.id.tv_pb);
+        mPbCircle.setMaxstepnumber(100);
+        mPbCircle.setShaderColor(mColors);
     }
 
     public void initView() {
@@ -83,6 +101,35 @@ public abstract class BaseMvpFragment<P extends IPresenterContract> extends MvpF
         if (mLoading != null && !mLoading.isShowing()){
             mLoading.show();
         }
+    }
+
+    public void showUpLoading(){
+        if (mUpLoading != null && !mUpLoading.isShowing()){
+            tv_pb.setText("0%");
+            mUpLoading.show();
+        }
+    }
+
+    public void dismissUpLoading(){
+        if (mUpLoading != null && mUpLoading.isShowing()){
+            mUpLoading.dismiss();
+        }
+    }
+
+    public void setUpLoadCount(int count){
+        if (count < 1){return;}
+        this.upLoadCount = count;
+    }
+
+    public void updatePb(final int position, final int pro){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv_pb.setText(pro+"%");
+                mUpCount.setText(position+"/" + upLoadCount);
+                mPbCircle.update(pro,0);
+            }
+        });
     }
 
     @Override

@@ -14,12 +14,27 @@ public class LoadingDialog extends Dialog {
 
 
     private  Boolean mIsBack;
+    private View view;
 
     public LoadingDialog(@NonNull Context context, Boolean isBack) {
         super(context);
         this.mIsBack = isBack;
-        setContentView(View.inflate(getContext(), R.layout.dialog_loading, null));
+        view = View.inflate(getContext(), R.layout.dialog_loading, null);
+        setContentView(view);
         setCancelable(mIsBack);
         setCanceledOnTouchOutside(isBack);
+    }
+
+    public LoadingDialog(@NonNull Context context, Boolean isBack,int view_id) {
+        super(context);
+        this.mIsBack = isBack;
+        view = View.inflate(getContext(), view_id, null);
+        setContentView(view);
+        setCancelable(mIsBack);
+        setCanceledOnTouchOutside(isBack);
+    }
+
+    public View getView(){
+        return view;
     }
 }

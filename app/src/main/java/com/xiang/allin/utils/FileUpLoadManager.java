@@ -48,14 +48,14 @@ import okhttp3.Response;
 public class FileUpLoadManager {
 
     private String FileType_Image = "image";
-    private String FileType_Voice = "voice";
+    private String FileType_Video = "video";
 
     public interface FileUpLoadCallBack {
         void onError(Throwable e);
 
         void onSuccess(String url);
 
-        void onProgress(int pro,int position);
+        void onProgress(int pro, int position);
     }
 
     private String UPLOAD_URL = Constant.BASE_TOMACT_URL + "/upLoadFile";
@@ -74,7 +74,7 @@ public class FileUpLoadManager {
                 .build();
     }
 
-    public void uoLoadImageFile(List<String> imagePathList, final FileUpLoadCallBack callBack) {
+    public void upLoadImageFile(List<String> imagePathList, final FileUpLoadCallBack callBack) {
         MultipartBody.Builder muBuilder = new MultipartBody.Builder();
         muBuilder.setType(MultipartBody.FORM);
         for (int i = 0; i < imagePathList.size(); i++) {
@@ -84,15 +84,83 @@ public class FileUpLoadManager {
             ProgressRequestBody requestBody = new ProgressRequestBody(fileBody, new ProgressRequestListener() {
                 @Override
                 public void onRequestProgress(int pro, long contentLength, boolean done) {
-                    Log.d("TAG","pro=====" + pro + "--------position-------" + finalI);
-                    if (callBack != null){
+                    Log.d("TAG", "pro=====" + pro + "--------position-------" + finalI);
+                    if (callBack != null) {
                         callBack.onProgress(pro, finalI);
                     }
                 }
             });
             muBuilder.addFormDataPart(FileType_Image, file.getName(), requestBody);
         }
-        Log.d("TAG","参数设置完毕");
+        Log.d("TAG", "参数设置完毕");
+        sendRequest(muBuilder.build(), callBack);
+    }
+
+    public void upLoadVideoFile(List<String> imagePathList, final FileUpLoadCallBack callBack) {
+        MultipartBody.Builder muBuilder = new MultipartBody.Builder();
+        muBuilder.setType(MultipartBody.FORM);
+        for (int i = 0; i < imagePathList.size(); i++) {
+            File file = new File(imagePathList.get(i));
+            RequestBody fileBody = RequestBody.create(MediaType.parse("video/mp4"), file);
+            final int finalI = i;
+            ProgressRequestBody requestBody = new ProgressRequestBody(fileBody, new ProgressRequestListener() {
+                @Override
+                public void onRequestProgress(int pro, long contentLength, boolean done) {
+                    Log.d("TAG", "pro=====" + pro + "--------position-------" + finalI);
+                    if (callBack != null) {
+                        callBack.onProgress(pro, finalI);
+                    }
+                }
+            });
+            muBuilder.addFormDataPart(FileType_Image, file.getName(), requestBody);
+        }
+        Log.d("TAG", "参数设置完毕");
+        sendRequest(muBuilder.build(), callBack);
+    }
+
+    public void upLoadFile(List<String> imagePathList, final FileUpLoadCallBack callBack) {
+        MultipartBody.Builder muBuilder = new MultipartBody.Builder();
+        muBuilder.setType(MultipartBody.FORM);
+        for (int i = 0; i < imagePathList.size(); i++) {
+            String path = imagePathList.get(i);
+            File file = new File(path);
+            if (path.endsWith(".PNG") || path.endsWith(".png") ||
+                    path.endsWith(".JPG") || path.endsWith(".jpg") ||
+                    path.endsWith(".JPEG") || path.endsWith(".jpeg")) {
+                RequestBody   fileBody = RequestBody.create(MediaType.parse("image/jpg"), file);
+                final int finalI = i;
+                ProgressRequestBody requestBody = new ProgressRequestBody(fileBody, new ProgressRequestListener() {
+                    @Override
+                    public void onRequestProgress(int pro, long contentLength, boolean done) {
+                        Log.d("TAG", "pro=====" + pro + "--------position-------" + finalI);
+                        if (callBack != null) {
+                            callBack.onProgress(pro, finalI);
+                        }
+                    }
+                });
+                muBuilder.addFormDataPart(FileType_Image, file.getName(), requestBody);
+            } else if (path.endsWith(".rm") || path.endsWith(".rmvb") ||
+                    path.endsWith(".mpeg1-4") || path.endsWith(".mov") ||
+                    path.endsWith(".dat") || path.endsWith(".wmv") ||
+                    path.endsWith(".avi") || path.endsWith(".3gp") ||
+                    path.endsWith(".amv") || path.endsWith(".dmv") ||
+                    path.endsWith(".flv") || path.endsWith(".mp4")) {
+                RequestBody  fileBody = RequestBody.create(MediaType.parse("video/mp4"), file);
+                final int finalI = i;
+                ProgressRequestBody requestBody = new ProgressRequestBody(fileBody, new ProgressRequestListener() {
+                    @Override
+                    public void onRequestProgress(int pro, long contentLength, boolean done) {
+                        Log.d("TAG", "pro=====" + pro + "--------position-------" + finalI);
+                        if (callBack != null) {
+                            callBack.onProgress(pro, finalI);
+                        }
+                    }
+                });
+                muBuilder.addFormDataPart(FileType_Video, file.getName(), requestBody);
+            }
+
+        }
+        Log.d("TAG", "参数设置完毕");
         sendRequest(muBuilder.build(), callBack);
     }
 
@@ -104,11 +172,11 @@ public class FileUpLoadManager {
                 Response response = getHttpClient().newCall(request).execute();
                 if (response.isSuccessful()) {
                     String json = response.body().string();
-                    Log.d("TAG","====body========" + json);
+                    Log.d("TAG", "====body========" + json);
                     ArrayList<String> list = new ArrayList<>();
                     UpLoadFileBean bean = new Gson().fromJson(json, UpLoadFileBean.class);
                     if (bean.getCode() == 1) {
-                        for (int i=0;i<bean.getData().size();i++){
+                        for (int i = 0; i < bean.getData().size(); i++) {
                             list.add(bean.getData().get(i).getUrl());
                         }
                         emitter.onNext(list);
@@ -132,6 +200,7 @@ public class FileUpLoadManager {
             @Override
             public void onNext(List<String> strings) {
                 if (callBack != null) {
+                    Log.d("TAG", "====bodyNextSize========" + strings.size());
                     for (int i = 0; i < strings.size(); i++) {
                         callBack.onSuccess(strings.get(i));
                     }

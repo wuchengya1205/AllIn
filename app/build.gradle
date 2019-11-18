@@ -72,6 +72,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     //图库
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.2'
+    // 进度条
+    implementation 'com.coder:circlebar:1.0.0'
     //lib库
     implementation project(path: ':mvplib')
     implementation project(path: ':netlib')

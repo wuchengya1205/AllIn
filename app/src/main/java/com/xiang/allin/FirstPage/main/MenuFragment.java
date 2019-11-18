@@ -5,10 +5,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.coder.circlebar.CircleBar;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -36,7 +39,7 @@ import okhttp3.RequestBody;
  * author : fengzhangwei
  * date : 2019/11/12
  */
-public class MenuFragment extends BaseMvpFragment<MenuContract.IPresenter> implements MenuContract.IView, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class MenuFragment extends BaseMvpFragment<MenuContract.IPresenter> implements MenuContract.IView, View.OnClickListener, CompoundButton.OnCheckedChangeListener, FileUpLoadManager.FileUpLoadCallBack {
 
     private ImageView iv_close;
     private ImageView iv_voice;
@@ -67,6 +70,7 @@ public class MenuFragment extends BaseMvpFragment<MenuContract.IPresenter> imple
         iv_shake = view.findViewById(R.id.iv_shake);
         sw_voice = view.findViewById(R.id.sw_voice);
         sw_shake = view.findViewById(R.id.sw_shake);
+
     }
 
     @Override
@@ -81,17 +85,17 @@ public class MenuFragment extends BaseMvpFragment<MenuContract.IPresenter> imple
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.iv_close){
+        if (v.getId() == R.id.iv_close) {
             AccessActivity.openHome();
         }
-        if (v.getId() == R.id.iv_icon){
+        if (v.getId() == R.id.iv_icon) {
             getPictureImage();
         }
     }
 
     private void getPictureImage() {
         PictureSelector.create(this)
-                .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .openGallery(PictureMimeType.ofAll())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                 .maxSelectNum(10)// 最大图片选择数量
                 .minSelectNum(1)// 最小选择数量
                 .imageSpanCount(4)// 每行显示个数
@@ -104,21 +108,21 @@ public class MenuFragment extends BaseMvpFragment<MenuContract.IPresenter> imple
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (buttonView.getId() == R.id.sw_voice){
+        if (buttonView.getId() == R.id.sw_voice) {
             if (isChecked) {
-                sw_voice.setSwitchTextAppearance(getContext(),R.style.s_true);
+                sw_voice.setSwitchTextAppearance(getContext(), R.style.s_true);
                 iv_voice.setImageResource(R.mipmap.icon_voice_open);
-            }else {
-                sw_voice.setSwitchTextAppearance(getContext(),R.style.s_false);
+            } else {
+                sw_voice.setSwitchTextAppearance(getContext(), R.style.s_false);
                 iv_voice.setImageResource(R.mipmap.icon_voice_close);
             }
         }
-        if (buttonView.getId() == R.id.sw_shake){
+        if (buttonView.getId() == R.id.sw_shake) {
             if (isChecked) {
-                sw_shake.setSwitchTextAppearance(getContext(),R.style.s_true);
+                sw_shake.setSwitchTextAppearance(getContext(), R.style.s_true);
                 iv_shake.setImageResource(R.mipmap.icon_shake_open);
-            }else {
-                sw_shake.setSwitchTextAppearance(getContext(),R.style.s_false);
+            } else {
+                sw_shake.setSwitchTextAppearance(getContext(), R.style.s_false);
                 iv_shake.setImageResource(R.mipmap.icon_shake_close);
             }
         }
@@ -127,40 +131,39 @@ public class MenuFragment extends BaseMvpFragment<MenuContract.IPresenter> imple
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        showLoading();
-        ArrayList<String> list = new ArrayList<>();
+        final ArrayList<String> sList = new ArrayList<>();
         List<LocalMedia> images = PictureSelector.obtainMultipleResult(data);
-        if (images.size() > 0){
-            if (resultCode == getActivity().RESULT_OK){
-                if (requestCode == PictureConfig.CHOOSE_REQUEST){
-                    Log.d("TAG","选择回调");
-                    for (int i=0;i<images.size();i++){
-                        list.add(images.get(i).getPath());
+        if (images.size() > 0) {
+            if (resultCode == getActivity().RESULT_OK) {
+                if (requestCode == PictureConfig.CHOOSE_REQUEST) {
+                    showUpLoading();
+                    Log.d("TAG", "选择回调");
+                    for (int i = 0; i < images.size(); i++) {
+                        String path = images.get(i).getPath();
+                        sList.add(path);
                     }
-                    fileUpLoadManager.uoLoadImageFile(list, new FileUpLoadManager.FileUpLoadCallBack() {
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d("TAG","上传失败====" + e.toString());
-                            dismissLoading();
-                        }
-
-                        @Override
-                        public void onSuccess(String url) {
-                            Log.d("TAG","上传成功");
-                            dismissLoading();
-                        }
-
-                        @Override
-                        public void onProgress(int pro,int position) {
-
-                        }
-                    });
-
+                    setUpLoadCount(sList.size());
+                    fileUpLoadManager.upLoadFile(sList, this);
                 }
             }
-        }else {
-            dismissLoading();
         }
 
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        Log.d("TAG", "上传失败====" + e.toString());
+        dismissUpLoading();
+    }
+
+    @Override
+    public void onSuccess(String url) {
+        Log.d("TAG", "上传成功====" + url);
+        dismissUpLoading();
+    }
+
+    @Override
+    public void onProgress(int pro, int position) {
+        updatePb((position + 1), pro);
     }
 }
