@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/icon_welcom"
+    tools:context=".register.RegisterActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:src="@mipmap/user"
+            android:layout_height="80dp"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_below="@id/iv_image"
+            android:layout_above="@id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="#00000000"
+                android:layout_height="match_parent">
+                <include layout="@layout/fragment_register_one"/>
+
+                <include layout="@layout/fragment_register_two"/>
+
+                <include layout="@layout/fragment_register_three"/>
+
+            </LinearLayout>
+
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/ll_input"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="下一步"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/shape_white80"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_60"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+
+
+</androidx.core.widget.NestedScrollView>

@@ -63,7 +63,7 @@ public class AccessActivity extends BaseActivity implements ViewPager.OnPageChan
 
     }
 
-    private void initBar() {
+    public void initBar() {
         ImmersionBar.with(this)
                 .transparentStatusBar()  //透明状态栏，不写默认透明色
                 .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR) // 隐藏导航栏或者状态栏

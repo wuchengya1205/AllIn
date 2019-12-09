@@ -10,11 +10,11 @@ import mvp.ljb.kt.contract.IViewContract;
 public interface MenuContract {
 
     interface IView extends IViewContract {
-
+        void onError(String msg);
+        void onSuccess();
     }
 
     interface IPresenter extends IPresenterContract {
-
-
+        void updateUserInfo(String url);
     }
 }

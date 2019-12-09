@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         bottom_nav_bar = findViewById(R.id.bottom_nav_bar);
     }
 
-    private void initBar() {
+    public void initBar() {
         ImmersionBar.with(this)
                 .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR) // 隐藏导航栏或者状态栏
                 .init();

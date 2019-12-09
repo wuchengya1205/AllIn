@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingLeft="@dimen/dp_50"
+                android:layout_width="wrap_content"
+                android:text="昵称:"
+                android:textSize="@dimen/sp_18"
+                android:textColor="@color/color_238AFF80"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/ed_name"
+                android:layout_width="match_parent"
+                android:minWidth="@dimen/dp_150"
+                android:hint="请输入您的昵称"
+                android:textColorHint="@color/brightly_grey"
+                android:inputType="text"
+                android:textColor="@color/color_238AFF"
+                android:layout_marginRight="@dimen/dp_50"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingLeft="@dimen/dp_50"
+                android:layout_width="wrap_content"
+                android:text="手机号:"
+                android:textSize="@dimen/sp_18"
+                android:textColor="@color/color_238AFF80"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/ed_mobile"
+                android:layout_width="match_parent"
+                android:minWidth="@dimen/dp_150"
+                android:hint="@string/writeuser"
+                android:textColorHint="@color/brightly_grey"
+                android:inputType="phone"
+                android:textColor="@color/color_238AFF"
+                android:layout_marginRight="@dimen/dp_50"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingLeft="@dimen/dp_50"
+                android:layout_width="wrap_content"
+                android:text="地址:"
+                android:textSize="@dimen/sp_18"
+                android:textColor="@color/color_238AFF80"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/ed_location"
+                android:layout_width="match_parent"
+                android:minWidth="@dimen/dp_150"
+                android:hint="请输入您的住址"
+                android:textColorHint="@color/brightly_grey"
+                android:inputType="text"
+                android:textColor="@color/color_238AFF"
+                android:layout_marginRight="@dimen/dp_50"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

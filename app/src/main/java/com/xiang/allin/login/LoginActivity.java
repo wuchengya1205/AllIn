@@ -4,6 +4,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
@@ -13,6 +14,7 @@ import com.xiang.allin.R;
 import com.xiang.allin.application.AllInApplication;
 import com.xiang.allin.base.Constant;
 import com.xiang.allin.base.ac.BaseMvpActivity;
+import com.xiang.allin.register.RegisterActivity;
 
 import net.ljb.kt.HttpConfig;
 
@@ -31,6 +33,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
     private EditText mobile;
     private EditText password;
     private Button btn_login;
+    private TextView tv_register;
 
     @Override
     protected int getLayoutId() {
@@ -71,6 +74,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
         mobile = findViewById(R.id.ed_mobile);
         password = findViewById(R.id.ed_pwd);
         btn_login = findViewById(R.id.btn_login);
+        tv_register = findViewById(R.id.tv_register);
     }
 
     @Override
@@ -78,6 +82,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
         super.initData();
         HttpConfig.INSTANCE.init(Constant.BASE_TOMACT_URL, AllInApplication.getHeader(),AllInApplication.getParams(),true);
         btn_login.setOnClickListener(this);
+        tv_register.setOnClickListener(this);
 
     }
 
@@ -85,6 +90,10 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
     public void onClick(View v) {
         if (v.getId() == R.id.btn_login){
             getPresenter().login();
+        }
+        if (v.getId() == R.id.tv_register){
+            goActivity(RegisterActivity.class);
+            overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         }
     }
 
@@ -107,6 +116,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IPresenter> imp
                 .statusBarAlpha(0.3f)  //状态栏透明度，不写默认 0.0f
                 .navigationBarAlpha(0.2f)  //导航栏透明度，不写默认 0.0F
                 .barAlpha(0.3f)  //状态栏和导航栏透明度，不写默认 0.0f
+                .statusBarDarkFont(true)   //状态栏字体是深色，不写默认为亮色
                 .init();
     }
 }

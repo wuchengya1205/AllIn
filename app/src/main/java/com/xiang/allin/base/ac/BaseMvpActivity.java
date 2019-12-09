@@ -94,7 +94,9 @@ public abstract class BaseMvpActivity<P extends IPresenterContract> extends MvpA
     }
 
     private void setNetChange(Boolean status) {
-        net_view.setNetChange(status);
+        if (net_view != null){
+            net_view.setNetChange(status);
+        }
     }
 
     public void showToast(String msg){
